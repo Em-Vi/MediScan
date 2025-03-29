@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 195 30% 98%;
+    --foreground: 200 20% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 200 20% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 20% 20%;
+
+    --primary: 200 100% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 160 65% 58%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 195 30% 94%;
+    --muted-foreground: 200 20% 45%;
+
+    --accent: 175 80% 49%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 200 20% 88%;
+    --input: 200 20% 88%;
+    --ring: 200 100% 65%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 200 50% 10%;
+    --foreground: 195 30% 98%;
+
+    --card: 200 50% 12%;
+    --card-foreground: 195 30% 98%;
+
+    --popover: 200 50% 12%;
+    --popover-foreground: 195 30% 98%;
+
+    --primary: 200 100% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 160 65% 58%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 200 50% 15%;
+    --muted-foreground: 200 20% 70%;
+
+    --accent: 175 80% 49%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 40%;
+    --destructive-foreground: 195 30% 98%;
+
+    --border: 200 50% 20%;
+    --input: 200 50% 20%;
+    --ring: 200 100% 65%;
+  }
+
+  .light-custom {
+    --background: 180 30% 96%;
+    --foreground: 200 30% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 200 30% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 30% 20%;
+
+    --primary: 190 90% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 150 70% 60%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 180 30% 92%;
+    --muted-foreground: 200 30% 45%;
+
+    --accent: 170 80% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 180 30% 85%;
+    --input: 180 30% 85%;
+    --ring: 190 90% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+  }
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #4a9dff 0%, #4ad991 100%);
+}
+
+.chat-bubble-user {
+  @apply bg-primary text-primary-foreground rounded-2xl rounded-tr-none p-4;
+}
+
+.chat-bubble-bot {
+  @apply bg-secondary text-secondary-foreground rounded-2xl rounded-tl-none p-4;
+}
+
+.typing-indicator {
+  @apply inline-flex gap-1;
+}
+
+.typing-indicator span {
+  @apply w-2 h-2 rounded-full bg-secondary-foreground animate-pulse;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.file-upload-preview {
+  @apply rounded-lg overflow-hidden border border-border;
+}
+
+.audio-player {
+  @apply w-full rounded-lg bg-muted p-2;
+}
+
+.document-preview {
+  @apply flex items-center gap-2 p-3 rounded-lg bg-muted;
+}
+
+.loading-logo {
+  @apply relative flex items-center justify-center;
+}
+
+.loading-logo-circle {
+  @apply absolute rounded-full border-4 border-transparent border-t-primary animate-spin-slow;
+}
+
+.medical-pulse {
+  @apply absolute rounded-full bg-primary/20 animate-ping-small;
+}
+
+/* History sidebar animation */
+.history-sidebar-enter {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.history-sidebar-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform 300ms, opacity 300ms;
+}
+
+.history-sidebar-exit {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.history-sidebar-exit-active {
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 300ms, opacity 300ms;
+}
+
