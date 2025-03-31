@@ -4,16 +4,31 @@ import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Send, Paperclip, X, Info, Music, File, Image } from "lucide-react"
+import {
+  Send,
+  Paperclip,
+  X,
+  Info,
+  Music,
+  File,
+  Image,
+  MessageSquarePlus,
+  PanelLeft,
+  User,
+  LogOut,
+  Settings,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Navigation } from "@/components/navigation"
+import { TextareaInput } from "@/components/textarea-input"
 import { LoadingScreen } from "@/components/loading-screen"
 import { FileUpload } from "@/components/file-upload"
 import { MessageItem } from "@/components/message-item"
 import { ChatHistorySidebar } from "@/components/chat-history-sidebar"
 import { VoiceAssistant } from "@/components/voice-assistant"
+import { AnimatedLogo } from "@/components/animated-logo"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { useApp } from "@/contexts/app-context"
+import { cn } from "@/lib/utils"
 import {
   type Message,
   type MessageAttachment,
@@ -25,10 +40,17 @@ import {
   loadChatSessions,
   createNewChatSession,
 } from "@/lib/supabase"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export default function ChatPage() {
   const router = useRouter()
-  const { user, isLoading } = useApp()
+  const { user, isLoading, signOut } = useApp()
   const [input, setInput] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isTyping, setIsTyping] = useState(false)
@@ -39,32 +61,8 @@ export default function ChatPage() {
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([])
   const [currentSessionId, setCurrentSessionId] = useState<string>("")
   const [showSidebar, setShowSidebar] = useState(false)
-  const [logoAnimationComplete, setLogoAnimationComplete] = useState(false)
+  const [showInitialAnimation, setShowInitialAnimation] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const sidebarRef = useRef<HTMLDivElement>(null)
-
-  // Set logo animation complete after delay
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLogoAnimationComplete(true)
-    }, 2500)
-
-    return () => clearTimeout(timer)
-  }, [])
-
-  // Close sidebar when clicking outside of it
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node) && showSidebar) {
-        setShowSidebar(false)
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [showSidebar])
 
   // Redirect if not logged in
   useEffect(() => {
@@ -114,10 +112,10 @@ export default function ChatPage() {
       }
     }
 
-    if (user && currentSessionId) {
+    if (user && currentSessionId && !showInitialAnimation) {
       loadMessages()
     }
-  }, [user, currentSessionId])
+  }, [user, currentSessionId, showInitialAnimation])
 
   // Save messages to localStorage whenever they change
   useEffect(() => {
@@ -160,12 +158,12 @@ export default function ChatPage() {
     scrollToBottom()
   }, [messages])
 
-  const handleSendMessage = async (e?: React.FormEvent, voiceText?: string) => {
+  const handleSendMessage = async (e?: React.FormEvent) => {
     if (e) e.preventDefault()
 
     if (!user || !currentSessionId) return
 
-    const messageContent = voiceText || input.trim()
+    const messageContent = input.trim()
     if (!messageContent && !pendingAttachment) return
 
     // Clear input and attachment
@@ -225,6 +223,10 @@ export default function ChatPage() {
     }
   }
 
+  const handleVoiceTranscript = (text: string) => {
+    setInput(text)
+  }
+
   const handleFileUpload = (attachment: MessageAttachment) => {
     setPendingAttachment(attachment)
     setShowFileUpload(false)
@@ -237,7 +239,9 @@ export default function ChatPage() {
 
   const handleSessionSelect = (sessionId: string) => {
     setCurrentSessionId(sessionId)
-    setShowSidebar(false)
+    if (window.innerWidth < 768) {
+      setShowSidebar(false)
+    }
   }
 
   const handleNewChat = () => {
@@ -247,48 +251,159 @@ export default function ChatPage() {
     setChatSessions((prev) => [newSession, ...prev])
     setCurrentSessionId(newSession.id)
     setMessages([])
-    setShowSidebar(false)
-  }
-
-  const handleVoiceTranscript = (text: string) => {
-    handleSendMessage(undefined, text)
+    if (window.innerWidth < 768) {
+      setShowSidebar(false)
+    }
   }
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar)
   }
 
-  if (isLoading || !logoAnimationComplete) {
+  const handleAnimationComplete = () => {
+    setShowInitialAnimation(false)
+  }
+
+  const handleLogout = async () => {
+    await signOut()
+    router.push("/")
+  }
+
+  if (isLoading) {
     return <LoadingScreen message="Loading your conversations..." />
   }
 
+  if (showInitialAnimation) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-background">
+        <AnimatedLogo size="lg" onAnimationComplete={handleAnimationComplete} />
+      </div>
+    )
+  }
+
   return (
-    <div className="flex flex-col h-screen">
-      <Navigation onToggleSidebar={toggleSidebar} onNewChat={handleNewChat} sidebarOpen={showSidebar} />
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          "fixed z-40 h-full w-[280px] border-r bg-background transition-transform duration-300 ease-in-out",
+          showSidebar ? "translate-x-0 md:relative" : "-translate-x-full sm:-translate-x-[280px]",
+        )}
+      >
+        <ChatHistorySidebar
+          sessions={chatSessions}
+          currentSessionId={currentSessionId}
+          onSessionSelect={handleSessionSelect}
+          onNewSession={handleNewChat}
+          onClose={() => setShowSidebar(false)}
+        />
+      </aside>
 
-      <div className="flex flex-1 overflow-hidden relative">
-        {/* Full-width sidebar overlay */}
-        {showSidebar && <div className="fixed inset-0 bg-black/20 z-20" onClick={() => setShowSidebar(false)} />}
+      {/* Main content */}
+      <main
+        className={cn(
+          "flex flex-col flex-1 h-screen overflow-hidden transition-all duration-300 ease-in-out",
+        )}
+      >
+        {/* Header */}
+        <header className="sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex h-16 items-center px-4">
+            {/* Left side controls */}
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleSidebar}
+                className={cn("rounded-full", showSidebar && "bg-primary/10")}
+                aria-label={showSidebar ? "Close sidebar" : "Open sidebar"}
+              >
+                <PanelLeft className="h-5 w-5" />
+              </Button>
 
-        {/* Sidebar */}
-        <div
-          ref={sidebarRef}
-          className={`
-            fixed inset-y-16 left-0 z-30 w-full max-w-xs md:max-w-sm lg:max-w-md
-            bg-background border-r shadow-lg transition-transform duration-300
-            ${showSidebar ? "translate-x-0" : "-translate-x-full"}
-          `}
-        >
-          <ChatHistorySidebar
-            sessions={chatSessions}
-            currentSessionId={currentSessionId}
-            onSessionSelect={handleSessionSelect}
-            onNewSession={handleNewChat}
-            onClose={() => setShowSidebar(false)}
-          />
-        </div>
+              <div className="flex items-center gap-2">
+                <div className="relative bg-gradient-to-r from-medical-blue to-medical-green rounded-full p-1">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="text-white"
+                  >
+                    <path
+                      d="M12 2C12.5523 2 13 2.44772 13 3V21C13 21.5523 12.5523 22 12 22C11.4477 22 11 21.5523 11 21V3C11 2.44772 11.4477 2 12 2Z"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="M17.2 5C17.9 5 18.5 5.6 18.5 6.33V17.67C18.5 18.4 17.9 19 17.2 19C16.5 19 15.9 18.4 15.9 17.67V6.33C15.9 5.6 16.5 5 17.2 5Z"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="M6.8 5C7.5 5 8.1 5.6 8.1 6.33V17.67C8.1 18.4 7.5 19 6.8 19C6.1 19 5.5 18.4 5.5 17.67V6.33C5.5 5.6 6.1 5 6.8 5Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-xs">
+                    +
+                  </span>
+                </div>
+                <span className="font-semibold text-lg">MediScan</span>
+              </div>
+            </div>
 
-        <main className="flex-1 flex flex-col w-full h-full">
+            <div className="ml-auto flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleNewChat}
+                className="rounded-full"
+                aria-label="New chat"
+              >
+                <MessageSquarePlus className="h-5 w-5" />
+              </Button>
+
+              <ThemeToggle />
+
+              {user && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="rounded-full h-9 w-9 p-0 overflow-hidden">
+                      {user.avatar ? (
+                        <img
+                          src={user.avatar || "/placeholder.svg"}
+                          alt="Profile"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+                          <User className="h-4 w-4" />
+                        </div>
+                      )}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem onClick={() => router.push("/profile")}>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>My Profile</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => router.push("/settings")}>
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Logout</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
+            </div>
+          </div>
+        </header>
+
+        {/* Messages area */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-24">
           {isLoadingMessages ? (
             <div className="flex-1 flex items-center justify-center">
               <div className="animate-pulse flex flex-col items-center">
@@ -296,89 +411,88 @@ export default function ChatPage() {
                 <div className="h-4 w-32 bg-muted rounded"></div>
               </div>
             </div>
+          ) : messages.length === 0 ? (
+            <div className="flex-1 flex flex-col items-center justify-center text-center p-4 animate-fade-in">
+              <div className="bg-primary/10 p-4 rounded-full mb-4">
+                <Info className="h-8 w-8 text-primary" />
+              </div>
+              <h2 className="text-xl font-bold mb-2">Start a conversation</h2>
+              <p className="text-muted-foreground max-w-md mb-6">
+                Ask MediScan about medications, symptoms, or health concerns. You can also upload images, audio, or
+                documents.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-lg w-full">
+                {[
+                  "What medications help with migraines?",
+                  "How do I treat a common cold?",
+                  "What are the side effects of ibuprofen?",
+                  "Is this rash concerning?",
+                ].map((suggestion) => (
+                  <Button
+                    key={suggestion}
+                    variant="outline"
+                    className="justify-start text-left h-auto py-3"
+                    onClick={() => {
+                      setInput(suggestion)
+                    }}
+                  >
+                    {suggestion}
+                  </Button>
+                ))}
+              </div>
+            </div>
           ) : (
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.length === 0 ? (
-                <div className="flex-1 flex flex-col items-center justify-center text-center p-4 animate-fade-in">
-                  <div className="bg-primary/10 p-4 rounded-full mb-4">
-                    <Info className="h-8 w-8 text-primary" />
-                  </div>
-                  <h2 className="text-xl font-bold mb-2">Start a conversation</h2>
-                  <p className="text-muted-foreground max-w-md mb-6">
-                    Ask MediScan about medications, symptoms, or health concerns. You can also upload images, audio, or
-                    documents.
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-lg w-full">
-                    {[
-                      "What medications help with migraines?",
-                      "How do I treat a common cold?",
-                      "What are the side effects of ibuprofen?",
-                      "Is this rash concerning?",
-                    ].map((suggestion) => (
-                      <Button
-                        key={suggestion}
-                        variant="outline"
-                        className="justify-start text-left h-auto py-3"
-                        onClick={() => {
-                          setInput(suggestion)
-                        }}
-                      >
-                        {suggestion}
-                      </Button>
-                    ))}
+            <>
+              {messages.map((message) => (
+                <MessageItem key={message.id} message={message} isLatest={message.id === latestMessageId} />
+              ))}
+
+              {isTyping && (
+                <div className="flex justify-start animate-fade-in">
+                  <div className="chat-bubble-bot max-w-[80%]">
+                    <div className="typing-indicator">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
                   </div>
                 </div>
-              ) : (
-                <>
-                  {messages.map((message) => (
-                    <MessageItem key={message.id} message={message} isLatest={message.id === latestMessageId} />
-                  ))}
-
-                  {isTyping && (
-                    <div className="flex justify-start animate-fade-in">
-                      <div className="chat-bubble-bot max-w-[80%]">
-                        <div className="typing-indicator">
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </>
               )}
-              <div ref={messagesEndRef} />
-            </div>
+            </>
           )}
+          <div ref={messagesEndRef} />
+        </div>
 
-          {pendingAttachment && (
-            <div className="mx-4 mb-4 p-2 border rounded-lg bg-muted/30 flex items-center justify-between animate-slide-in-bottom">
-              <div className="flex items-center gap-2">
-                {pendingAttachment.type === "image" && <Image className="h-4 w-4 text-primary" />}
-                {pendingAttachment.type === "audio" && <Music className="h-4 w-4 text-accent" />}
-                {pendingAttachment.type === "document" && <File className="h-4 w-4 text-secondary" />}
-                <span className="text-sm truncate max-w-[200px]">{pendingAttachment.name}</span>
+        {/* Floating message input */}
+        <div className="relative bottom-4 left-0 right-0 mx-auto w-full max-w-3xl px-4 z-10">
+          <div className="bg-background border rounded-lg shadow-lg">
+            {pendingAttachment && (
+              <div className="p-2 border-b flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {pendingAttachment.type === "image" && <Image className="h-4 w-4 text-primary" />}
+                  {pendingAttachment.type === "audio" && <Music className="h-4 w-4 text-accent" />}
+                  {pendingAttachment.type === "document" && <File className="h-4 w-4 text-secondary" />}
+                  <span className="text-sm truncate max-w-[200px]">{pendingAttachment.name}</span>
+                </div>
+                <Button variant="ghost" size="icon" onClick={() => setPendingAttachment(null)}>
+                  <X className="h-4 w-4" />
+                </Button>
               </div>
-              <Button variant="ghost" size="icon" onClick={() => setPendingAttachment(null)}>
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-          )}
+            )}
 
-          {showFileUpload ? (
-            <div className="p-4">
-              <FileUpload onFileUpload={handleFileUpload} onCancel={cancelFileUpload} />
-            </div>
-          ) : (
-            <div className="p-4 border-t">
-              <form onSubmit={handleSendMessage} className="flex gap-2">
+            {showFileUpload ? (
+              <div className="p-4">
+                <FileUpload onFileUpload={handleFileUpload} onCancel={cancelFileUpload} />
+              </div>
+            ) : (
+              <form onSubmit={handleSendMessage} className="flex items-end p-2 gap-2">
                 <Button
                   type="button"
                   variant="outline"
                   size="icon"
                   onClick={() => setShowFileUpload(true)}
                   disabled={isTyping}
-                  className="rounded-full"
+                  className="rounded-full flex-shrink-0"
                 >
                   <Paperclip className="h-5 w-5" />
                   <span className="sr-only">Attach file</span>
@@ -386,27 +500,31 @@ export default function ChatPage() {
 
                 <VoiceAssistant onTranscript={handleVoiceTranscript} isDisabled={isTyping} />
 
-                <Input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Type your message..."
-                  className="flex-1 rounded-full"
-                  disabled={isTyping}
-                />
+                <div className="flex-1">
+                  <TextareaInput
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Type your message..."
+                    className="rounded-full resize-none"
+                    disabled={isTyping}
+                    onEnterPress={handleSendMessage}
+                  />
+                </div>
+
                 <Button
                   type="submit"
                   size="icon"
-                  className="bg-gradient-to-r from-medical-blue to-medical-green hover:opacity-90 rounded-full"
+                  className="bg-gradient-to-r from-medical-blue to-medical-green hover:opacity-90 rounded-full flex-shrink-0"
                   disabled={isTyping || (!input.trim() && !pendingAttachment)}
                 >
                   <Send className="h-5 w-5" />
                   <span className="sr-only">Send message</span>
                 </Button>
               </form>
-            </div>
-          )}
-        </main>
-      </div>
+            )}
+          </div>
+        </div>
+      </main>
     </div>
   )
 }

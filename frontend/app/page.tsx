@@ -26,11 +26,11 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="container flex justify-between items-center py-4">
-        <div className="w-full flex">
-          <Logo size="lg" animate={true} showText={true}/>
+      <header className="container flex justify-between items-center py-6">
+        <div className="w-full flex justify-center">
+          <Logo size="lg" animate={true} />
         </div>
-        <div className="flex items-center gap-4">
+        <div className="absolute right-4 top-4 flex items-center gap-4">
           <Link href="/login">
             <Button variant="ghost">Login</Button>
           </Link>

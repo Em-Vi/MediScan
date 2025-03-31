@@ -14,7 +14,7 @@ interface LogoProps {
 }
 
 export function Logo({ size = "md", showText = false, animate = false, centered = false, className = "" }: LogoProps) {
-  const [animationState, setAnimationState] = useState<"initial" | "animating" | "moving" | "final">(animate ? "initial" : "final")
+  const [animationState, setAnimationState] = useState<"initial" | "animating" | "final">(animate ? "initial" : "final")
 
   useEffect(() => {
     if (animate) {
@@ -26,17 +26,12 @@ export function Logo({ size = "md", showText = false, animate = false, centered 
       }, 300)
 
       const timer2 = setTimeout(() => {
-        setAnimationState("moving")
-      }, 1500)
-      
-      const timer3 = setTimeout(() => {
         setAnimationState("final")
       }, 2000)
 
       return () => {
         clearTimeout(timer1)
         clearTimeout(timer2)
-        clearTimeout(timer3)
       }
     }
   }, [animate])
@@ -57,7 +52,7 @@ export function Logo({ size = "md", showText = false, animate = false, centered 
     "flex items-center gap-2 font-bold transition-all duration-700",
     sizeClasses[size],
     {
-      "justify-center": centered || animationState === "initial" || animationState === "animating",
+      "justify-center": centered || animationState !== "final",
       "w-full": centered,
       "opacity-0 scale-95": animationState === "initial",
       "opacity-100 scale-100": animationState !== "initial",
@@ -68,10 +63,8 @@ export function Logo({ size = "md", showText = false, animate = false, centered 
   return (
     <Link href="/" className={containerClasses}>
       <div
-        className={cn("relative transition-all duration-700", {
+        className={cn("relative transition-transform duration-700", {
           "animate-pulse-scale": animationState === "animating",
-          "translate-x-0": animationState === "initial" || animationState === "animating",
-          "-translate-x-3": animationState === "moving" || animationState === "final"
         })}
       >
         <div className="bg-gradient-to-r from-medical-blue to-medical-green rounded-full p-1">
@@ -84,16 +77,15 @@ export function Logo({ size = "md", showText = false, animate = false, centered 
           </span>
         </div>
       </div>
-      {showText && (
+      {showText && animationState !== "final" && (
         <span
           className={cn(
             "bg-gradient-to-r from-medical-blue to-medical-green bg-clip-text text-transparent transition-all duration-700",
             {
               "animate-pulse": animationState === "animating",
-              "opacity-0": animationState === "initial" || animationState === "animating",
-              "opacity-100": animationState === "moving" || animationState === "final",
-              "translate-x-[-10px]": animationState === "moving",
-              "translate-x-0": animationState === "final",
+              "opacity-0": animationState === "initial",
+              "opacity-100": animationState === "animating",
+              "opacity-0 translate-y-2": animationState === "final",
             },
           )}
         >
@@ -103,3 +95,4 @@ export function Logo({ size = "md", showText = false, animate = false, centered 
     </Link>
   )
 }
+

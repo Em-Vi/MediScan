@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { format } from "date-fns"
-import { Trash2, MessageSquare, Plus, Search, X, ChevronLeft } from "lucide-react"
+import { Trash2, MessageSquare, Search, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { type ChatSession, deleteChatSession } from "@/lib/supabase"
@@ -60,14 +60,7 @@ export function ChatHistorySidebar({
     <div className={`flex flex-col h-full ${className}`}>
       <div className="p-4 border-b">
         <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            {onClose && (
-              <Button variant="ghost" size="icon" onClick={onClose} className="md:hidden">
-                <ChevronLeft className="h-5 w-5" />
-              </Button>
-            )}
-            <h2 className="font-semibold">Chat History</h2>
-          </div>
+          <h2 className="font-semibold">Chat History</h2>
           <div className="flex items-center gap-1">
             {showSearch ? (
               <Button
@@ -86,10 +79,11 @@ export function ChatHistorySidebar({
                 <Search className="h-4 w-4" />
               </Button>
             )}
-            <Button variant="outline" size="sm" className="gap-1" onClick={onNewSession}>
-              <Plus className="h-4 w-4" />
-              New Chat
-            </Button>
+            {onClose && (
+              <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close sidebar">
+                <X className="h-5 w-5" />
+              </Button>
+            )}
           </div>
         </div>
 

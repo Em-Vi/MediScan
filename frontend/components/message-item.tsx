@@ -158,8 +158,8 @@ export function MessageItem({ message, isLatest = false }: MessageItemProps) {
 
   return (
     <div ref={messageRef} className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}>
-      <div className={`${message.sender === "user" ? "chat-bubble-user" : "chat-bubble-bot"} max-w-[80%]`}>
-        {message.content && <div className="mb-1">{message.content}</div>}
+      <div className={`${message.sender === "user" ? "chat-bubble-user" : "chat-bubble-bot"} max-w-[85%] break-words`}>
+        {message.content && <div className="mb-1 whitespace-pre-wrap">{message.content}</div>}
 
         {message.attachments &&
           message.attachments.map((attachment) => <div key={attachment.id}>{renderAttachment(attachment)}</div>)}
