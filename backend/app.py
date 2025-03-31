@@ -1,16 +1,25 @@
-from fastapi import FastAPI
-from transformers import AutoModelForCausalLM, AutoTokenizer
+import google.generativeai as genai
+import os
+from dotenv import load_dotenv
 
-app = FastAPI()
+# Load environment variables
+load_dotenv()
 
-model_name = "medalpaca/medalpaca-7b"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
+# Get API key from .env
+api_key = os.getenv("GEMINI_API_KEY")
+# Set up API key
+genai.configure(api_key=api_key)
 
-@app.get("/ask")
-def ask(query: str):
-    inputs = tokenizer(query, return_tensors="pt").to("cuda")
-    output = model.generate(**inputs, max_new_tokens=100)
-    response = tokenizer.decode(output[0], skip_special_tokens=True)
-    return {"response": response}
+# Initialize model
+model = genai.GenerativeModel("gemini-2.0-flash")
 
+# Example query
+prompt = """
+You are an AI Pharmacist specialized in assisting doctors and pharmacists.
+- Provide accurate, well-researched responses on drugs, dosages, and interactions.
+- If unsure, suggest consulting a licensed pharmacist or doctor.
+- Do not provide treatment plans or diagnose conditions.
+- Format responses in a clear, structured way.
+"""
+response = model.generate_content(prompt + "\n\nUser: Can I take ibuprofen with aspirin?")
+print(response)
