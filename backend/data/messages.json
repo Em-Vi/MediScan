@@ -1,0 +1,416 @@
+[
+  {
+    "id": "d03a7669-e377-49ff-8bf6-7ecbb4f6e99e",
+    "user_id": "wux5vy7b1yc",
+    "session_id": "1743538909910",
+    "content": "How do I treat a common cold?",
+    "sender": "user",
+    "timestamp": "2025-04-02T01:52:08.180266",
+    "created_at": "2025-04-02T01:52:08.180852"
+  },
+  {
+    "id": "a60c8f85-fc6a-4b73-9eed-f4e7a563d147",
+    "user_id": "wux5vy7b1yc",
+    "session_id": "1743538909910",
+    "content": "This is a mock response because the GEMINI_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T01:52:08.180852",
+    "created_at": "2025-04-02T01:52:08.192093"
+  },
+  {
+    "id": "07aa445d-0efa-40a3-8b8b-c16969a4f465",
+    "user_id": "n8d95gw0kxg",
+    "session_id": "1743539029792",
+    "content": "What medications help with migraines?",
+    "sender": "user",
+    "timestamp": "2025-04-02T01:53:57.183472",
+    "created_at": "2025-04-02T01:53:57.183472"
+  },
+  {
+    "id": "eaaebef6-0e33-447f-89e4-48e0df961e95",
+    "user_id": "n8d95gw0kxg",
+    "session_id": "1743539029792",
+    "content": "This is a mock response because the GEMINI_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T01:53:57.184741",
+    "created_at": "2025-04-02T01:53:57.195649"
+  },
+  {
+    "id": "4b373ab0-4fa1-48e2-b593-60baf590d6c3",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "What medications help with migraines?",
+    "sender": "user",
+    "timestamp": "2025-04-02T01:55:52.666189",
+    "created_at": "2025-04-02T01:55:52.666189"
+  },
+  {
+    "id": "54cf3006-c01a-4df7-a67f-9c9449a5cae4",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "This is a mock response because the GEMINI_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T01:55:52.668475",
+    "created_at": "2025-04-02T01:55:52.677589"
+  },
+  {
+    "id": "45b12ca4-4310-4189-b9e0-e4885291e00d",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "hell",
+    "sender": "user",
+    "timestamp": "2025-04-02T01:59:16.510941",
+    "created_at": "2025-04-02T01:59:16.511488"
+  },
+  {
+    "id": "110a6d02-c020-4037-ad75-8da2d00473d6",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T01:59:16.513198",
+    "created_at": "2025-04-02T01:59:16.522736"
+  },
+  {
+    "id": "a24bd4a0-b51a-4906-af67-fe4e19118a4e",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "hello",
+    "sender": "user",
+    "timestamp": "2025-04-02T01:59:50.146948",
+    "created_at": "2025-04-02T01:59:50.148218"
+  },
+  {
+    "id": "2409e056-45e4-4535-bce4-d1892ca6c58a",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T01:59:50.151015",
+    "created_at": "2025-04-02T01:59:50.163396"
+  },
+  {
+    "id": "f3ce9d27-97a5-4e12-a850-775444608762",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "hello",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:02:13.256658",
+    "created_at": "2025-04-02T02:02:13.258305"
+  },
+  {
+    "id": "4ea201ec-cf85-4a0c-a042-efc1309f363c",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:02:13.259899",
+    "created_at": "2025-04-02T02:02:13.269497"
+  },
+  {
+    "id": "99cf9ec3-773e-4d11-a949-5f5e08455ac7",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "helo",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:07:40.035436",
+    "created_at": "2025-04-02T02:07:40.037058"
+  },
+  {
+    "id": "c6874427-3db2-418d-920a-491bc03d488f",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:07:40.043457",
+    "created_at": "2025-04-02T02:07:40.055099"
+  },
+  {
+    "id": "1da69145-e507-4aa2-bd5c-55f83988f2c7",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "hello",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:09:20.089476",
+    "created_at": "2025-04-02T02:09:20.090543"
+  },
+  {
+    "id": "1c7c2d78-6de5-4b07-af3d-55d725a6bb6a",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:09:20.091573",
+    "created_at": "2025-04-02T02:09:20.100102"
+  },
+  {
+    "id": "8b0bdf6e-bbe2-46da-96e0-dab4c002541e",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "helo",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:10:05.074593",
+    "created_at": "2025-04-02T02:10:05.075121"
+  },
+  {
+    "id": "5e5ab1a5-9359-4aed-a4d7-1ec0d086dec1",
+    "user_id": "lla06l63vyh",
+    "session_id": "1743539144355",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:10:05.076763",
+    "created_at": "2025-04-02T02:10:05.085880"
+  },
+  {
+    "id": "a05ac3f9-b19e-4143-aa0d-a9cc324b1737",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "What are the side effects of ibuprofen?",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:13:29.186118",
+    "created_at": "2025-04-02T02:13:29.187955"
+  },
+  {
+    "id": "eef69e1a-81bf-4978-81fa-ad1e28ca3f52",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:13:29.190874",
+    "created_at": "2025-04-02T02:13:29.202023"
+  },
+  {
+    "id": "fddef773-9264-4274-ab82-096e264e8673",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "hello",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:16:28.824210",
+    "created_at": "2025-04-02T02:16:28.834803"
+  },
+  {
+    "id": "c6501946-387e-4232-821b-43654c90cc7b",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:16:28.836545",
+    "created_at": "2025-04-02T02:16:28.843642"
+  },
+  {
+    "id": "3bf258b0-c188-4e9b-99b6-c67e6b73c77e",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "hello",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:19:03.348166",
+    "created_at": "2025-04-02T02:19:03.348724"
+  },
+  {
+    "id": "adc20eb1-5c5e-4eb4-aead-6e5c3261dd49",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:19:03.350880",
+    "created_at": "2025-04-02T02:19:03.360417"
+  },
+  {
+    "id": "b610ea9e-1e2e-4583-8b17-54e6e5fccc48",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "hey",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:25:30.307464",
+    "created_at": "2025-04-02T02:25:30.308720"
+  },
+  {
+    "id": "9efc5948-3bcf-440c-a310-7aad0a8033ad",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:25:30.311085",
+    "created_at": "2025-04-02T02:25:30.322976"
+  },
+  {
+    "id": "0cd60574-1900-4a93-93e2-1cc26f51a5ef",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "hello",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:26:43.261602",
+    "created_at": "2025-04-02T02:26:43.263809"
+  },
+  {
+    "id": "968f4091-9111-406c-9174-d6c8dd8484ce",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:26:43.265470",
+    "created_at": "2025-04-02T02:26:43.274999"
+  },
+  {
+    "id": "3de812d9-e6b6-4cb6-b2e8-cf0ce5f87306",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "hello",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:27:45.188879",
+    "created_at": "2025-04-02T02:27:45.189923"
+  },
+  {
+    "id": "998f0cd0-83b4-4295-b5e1-0f0fd0df5c60",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:27:45.191483",
+    "created_at": "2025-04-02T02:27:45.201736"
+  },
+  {
+    "id": "5e349672-c132-4537-9527-d0e706bfdf88",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "hel",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:30:17.979502",
+    "created_at": "2025-04-02T02:30:17.980068"
+  },
+  {
+    "id": "ab81509d-1577-477b-b1ff-211a81e8beee",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:30:17.981745",
+    "created_at": "2025-04-02T02:30:17.990567"
+  },
+  {
+    "id": "cf94ab4c-831f-41c7-a3f4-2bc7f41e1725",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "efaef",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:36:19.414910",
+    "created_at": "2025-04-02T02:36:19.417100"
+  },
+  {
+    "id": "047bfaf9-068a-4779-90e8-09395ad01b12",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:36:19.428008",
+    "created_at": "2025-04-02T02:36:19.444693"
+  },
+  {
+    "id": "e301623b-9609-488f-b833-a34f95126111",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "awadadw",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:37:46.860690",
+    "created_at": "2025-04-02T02:37:46.861210"
+  },
+  {
+    "id": "f4bbd760-b377-49c9-91f7-df5be8ecab6b",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:37:46.863646",
+    "created_at": "2025-04-02T02:37:46.872585"
+  },
+  {
+    "id": "f65b6538-2659-4b8f-abda-cc2fc8e58652",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "sef",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:40:21.077472",
+    "created_at": "2025-04-02T02:40:21.078028"
+  },
+  {
+    "id": "d2bccf5c-eda9-466f-8046-ac284b456985",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:40:21.081980",
+    "created_at": "2025-04-02T02:40:21.092615"
+  },
+  {
+    "id": "dff4c123-4167-49f2-9857-b327a00b88c0",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "efwefwe",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:42:38.826330",
+    "created_at": "2025-04-02T02:42:38.827036"
+  },
+  {
+    "id": "99c7ac66-5d6e-4eb6-aa35-db6fe850bc40",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:42:38.833888",
+    "created_at": "2025-04-02T02:42:38.848681"
+  },
+  {
+    "id": "3e4f189d-7e78-4ab7-89a9-e778dcab4b1a",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "afasf",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:44:23.987035",
+    "created_at": "2025-04-02T02:44:23.988259"
+  },
+  {
+    "id": "a3b1ace9-4854-4d59-9076-32ec18365de2",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:44:23.993717",
+    "created_at": "2025-04-02T02:44:24.010053"
+  },
+  {
+    "id": "01015624-1df9-41c9-a33c-515247602ec3",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "czscsczs",
+    "sender": "user",
+    "timestamp": "2025-04-02T02:47:37.746046",
+    "created_at": "2025-04-02T02:47:37.746578"
+  },
+  {
+    "id": "f58a7781-ab55-4bdb-b5e0-f8ebcc9c91b2",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T02:47:37.750973",
+    "created_at": "2025-04-02T02:47:37.765477"
+  },
+  {
+    "id": "38c52c8f-9352-4548-a837-fbbf9aa24198",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "hello",
+    "sender": "user",
+    "timestamp": "2025-04-02T03:00:09.356531",
+    "created_at": "2025-04-02T03:00:09.358791"
+  },
+  {
+    "id": "b008c724-57be-45e1-b9d1-0c559b9ec8ca",
+    "user_id": "2gpxwq5mp1y",
+    "session_id": "1743540202404",
+    "content": "This is a mock response because the GOOGLE_API_KEY is not set. Please add your API key to the environment variables or .env file.",
+    "sender": "bot",
+    "timestamp": "2025-04-02T03:00:09.367589",
+    "created_at": "2025-04-02T03:00:09.403185"
+  }
+]

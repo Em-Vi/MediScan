@@ -26,7 +26,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // Initialize theme from localStorage or system preference
   useEffect(() => {
-    const savedTheme = localStorage.getItem("mediscan-theme") as Theme | null
+    const savedTheme = localStorage.getItem("AutoDoc-theme") as Theme | null
 
     if (savedTheme) {
       setThemeState(savedTheme)
@@ -36,7 +36,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
 
     // Check for existing user session
-    const savedUser = localStorage.getItem("mediscan_user")
+    const savedUser = localStorage.getItem("AutoDoc_user")
     if (savedUser) {
       try {
         setUser(JSON.parse(savedUser))
@@ -64,7 +64,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
 
     // Save to localStorage
-    localStorage.setItem("mediscan-theme", theme)
+    localStorage.setItem("AutoDoc-theme", theme)
   }, [theme])
 
   const setTheme = (newTheme: Theme) => {

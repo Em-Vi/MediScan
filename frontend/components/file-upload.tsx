@@ -5,10 +5,9 @@ import type React from "react"
 import { useState, useRef } from "react"
 import { X, Upload, Paperclip, Image, Music, File } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { type MessageAttachment, mockUploadFile } from "@/lib/supabase"
 
 interface FileUploadProps {
-  onFileUpload: (attachment: MessageAttachment) => void
+  onFileUpload: (file: File) => void
   onCancel: () => void
 }
 
@@ -17,7 +16,6 @@ export function FileUpload({ onFileUpload, onCancel }: FileUploadProps) {
   const [preview, setPreview] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [uploadProgress, setUploadProgress] = useState(0)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,43 +81,12 @@ export function FileUpload({ onFileUpload, onCancel }: FileUploadProps) {
     if (!file) return
 
     setIsUploading(true)
-    setUploadProgress(0)
-
-    // Simulate upload progress
-    const progressInterval = setInterval(() => {
-      setUploadProgress((prev) => {
-        const newProgress = prev + Math.random() * 15
-        return newProgress > 90 ? 90 : newProgress
-      })
-    }, 300)
-
+    
     try {
-      const { url, error } = await mockUploadFile(file)
-
-      if (error) {
-        setError(error)
-        return
-      }
-
-      // Complete progress
-      setUploadProgress(100)
-
-      const fileExtension = file.name.split(".").pop()?.toLowerCase() || ""
-
-      const attachment: MessageAttachment = {
-        id: Date.now().toString(),
-        url,
-        type: getFileType(file),
-        name: file.name,
-        size: file.size,
-        fileExtension,
-      }
-
-      onFileUpload(attachment)
+      // Pass the file directly to the parent component for uploading
+      onFileUpload(file)
     } catch (err) {
       setError("Failed to upload file")
-    } finally {
-      clearInterval(progressInterval)
       setIsUploading(false)
     }
   }
@@ -189,21 +156,6 @@ export function FileUpload({ onFileUpload, onCancel }: FileUploadProps) {
                 alt="Preview"
                 className="w-full h-auto max-h-48 object-contain"
               />
-            </div>
-          )}
-
-          {isUploading && (
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs">
-                <span>Uploading...</span>
-                <span>{Math.round(uploadProgress)}%</span>
-              </div>
-              <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-primary rounded-full transition-all duration-300"
-                  style={{ width: `${uploadProgress}%` }}
-                ></div>
-              </div>
             </div>
           )}
 

@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import {
@@ -33,13 +32,14 @@ import {
   type Message,
   type MessageAttachment,
   type ChatSession,
-  mockGetMessages,
-  mockSendMessage,
-  mockGetBotResponse,
+  getMessages,
+  sendChatMessage,
   saveChatHistory,
   loadChatSessions,
   createNewChatSession,
-} from "@/lib/supabase"
+  deleteChatSession,
+  uploadChatFile
+} from "@/lib/chat-service"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -97,7 +97,7 @@ export default function ChatPage() {
       setIsLoadingMessages(true)
 
       try {
-        const { messages: loadedMessages, error } = await mockGetMessages(user.id, currentSessionId)
+        const { messages: loadedMessages, error } = await getMessages(user.id, currentSessionId)
 
         if (error) {
           console.error("Failed to load messages:", error)
@@ -173,16 +173,16 @@ export default function ChatPage() {
     const attachments = pendingAttachment ? [pendingAttachment] : undefined
 
     try {
-      // Send user message
-      const { message: userMessage, error: sendError } = await mockSendMessage(
+      // Send user message and get bot response
+      const { userMessage, botMessage, error } = await sendChatMessage(
         user.id,
         currentSessionId,
         messageContent,
         attachments,
       )
 
-      if (sendError) {
-        console.error("Failed to send message:", sendError)
+      if (error) {
+        console.error("Failed to send message:", error)
         return
       }
 
@@ -198,18 +198,8 @@ export default function ChatPage() {
       // Show bot typing indicator
       setIsTyping(true)
 
-      // Get bot response
-      const { message: botMessage, error: botError } = await mockGetBotResponse(
-        user.id,
-        currentSessionId,
-        messageContent,
-      )
-
-      if (botError) {
-        console.error("Failed to get bot response:", botError)
-        setIsTyping(false)
-        return
-      }
+      // Add a small delay to simulate typing
+      await new Promise(resolve => setTimeout(resolve, 1000))
 
       if (botMessage) {
         setMessages((prev) => [...prev, botMessage])
@@ -227,10 +217,16 @@ export default function ChatPage() {
     setInput(text)
   }
 
-  const handleFileUpload = (attachment: MessageAttachment) => {
-    setPendingAttachment(attachment)
+  const handleFileUpload = async (file: File) => {
+    if (!user) return
+    
+    const attachment = await uploadChatFile(user.id, file)
+    if (attachment) {
+      setPendingAttachment(attachment)
+    }
     setShowFileUpload(false)
   }
+  
 
   const cancelFileUpload = () => {
     setShowFileUpload(false)
@@ -331,7 +327,7 @@ export default function ChatPage() {
                     className="text-white"
                   >
                     <path
-                      d="M12 2C12.5523 2 13 2.44772 13 3V21C13 21.5523 12.5523 22 12 22C11.4477 22 11 21.5523 11 21V3C11 2.44772 11.4477 2 12 2Z"
+                      d="M12 2C12.5523 2 13 2.44772 13 3V21C13 21.5523 12.5523 22 12 22C11.4477 22 11 21V3C11 2.44772 11.4477 2 12 2Z"
                       fill="currentColor"
                     />
                     <path
