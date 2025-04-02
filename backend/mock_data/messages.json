@@ -1,0 +1,82 @@
+[
+  {
+    "id": "98e61394-f7f9-4411-ba7d-5546054e6e54",
+    "user_id": "wt8rwfhldtp",
+    "session_id": "1743572688791",
+    "content": "hello",
+    "sender": "user",
+    "timestamp": "2025-04-02T11:15:01.283210"
+  },
+  {
+    "id": "514d7f11-5ab0-4830-8394-f037da6607cb",
+    "user_id": "wt8rwfhldtp",
+    "session_id": "1743572688791",
+    "content": "Hello! I am AutoDoc, your AI-powered pharmacy assistant. I am ready to assist you with analyzing prescriptions, detecting drug interactions, providing patient counseling points, and assessing prescription safety. Please provide me with the prescription details or your specific questions.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T11:15:01.285440"
+  },
+  {
+    "id": "d3f2274c-36bb-4605-aa69-ae1ef375a09b",
+    "user_id": "wt8rwfhldtp",
+    "session_id": "1743572688791",
+    "content": "what can you do?",
+    "sender": "user",
+    "timestamp": "2025-04-02T11:15:14.509504"
+  },
+  {
+    "id": "a70ab622-e80f-48b7-925e-24aa3bfed445",
+    "user_id": "wt8rwfhldtp",
+    "session_id": "1743572688791",
+    "content": "Hello! I am AutoDoc, your AI-powered pharmacy assistant. I can help you with the following:\n\n*   **Drug Interaction Detection:** I can identify potential drug interactions (major and moderate), explain the interaction mechanism, potential adverse effects, and provide recommendations.\n\n*   **Patient Counseling Points:** I can provide essential patient counseling points, including dosage instructions, administration guidelines, common side effects, storage recommendations, and lifestyle modifications.\n\n*   **Prescription Safety Assessment:**\n    *   I can verify if prescribed drug doses are appropriate based on the patient's age and weight.\n    *   I can flag potential overdoses or subtherapeutic doses and suggest dose corrections.\n    *   I can identify any contraindicated drugs based on the patient's age.\n\n*   **General Drug Queries:** I can answer questions about drug mechanisms of action, indications, contraindications, side effects, metabolism, excretion, and provide information on alternative medications.\n\nI aim to provide structured, concise, and clinically accurate information based on the latest drug databases to support your professional practice. How can I assist you today?\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T11:15:14.509504"
+  },
+  {
+    "id": "fb2b1470-e5d6-4beb-80b2-673bd334db2a",
+    "user_id": "wt8rwfhldtp",
+    "session_id": "1743572688791",
+    "content": "i have headache and fever",
+    "sender": "user",
+    "timestamp": "2025-04-02T11:15:46.676787"
+  },
+  {
+    "id": "afcd9adf-4a63-441c-878c-24c09dfeb287",
+    "user_id": "wt8rwfhldtp",
+    "session_id": "1743572688791",
+    "content": "As a pharmacy assistant AI, I cannot provide medical advice or diagnose conditions. Headaches and fever can be symptoms of various illnesses. It is essential to consult with a healthcare professional for an accurate diagnosis and appropriate treatment plan. They can assess your specific situation, consider your medical history, and recommend the best course of action for you.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T11:15:46.678365"
+  },
+  {
+    "id": "50676854-378e-46a2-95c8-286bda66fdaf",
+    "user_id": "1a14ca6vepk",
+    "session_id": "1743572851029",
+    "content": "helllo",
+    "sender": "user",
+    "timestamp": "2025-04-02T11:17:44.849728"
+  },
+  {
+    "id": "53d709ef-05ba-4403-8cc1-fe0e4b533c10",
+    "user_id": "1a14ca6vepk",
+    "session_id": "1743572851029",
+    "content": "Hello! I am AutoDoc, your AI-powered pharmacy assistant. I'm ready to help you analyze prescriptions, identify drug interactions, provide patient counseling points, and assess prescription safety. Please provide me with the prescription details or your specific drug queries, and I'll do my best to assist you.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T11:17:44.866440"
+  },
+  {
+    "id": "726fda93-1aac-447a-ab00-b75da26d9311",
+    "user_id": "1a14ca6vepk",
+    "session_id": "1743572851029",
+    "content": "i have pain in my stomach",
+    "sender": "user",
+    "timestamp": "2025-04-02T11:18:04.753561"
+  },
+  {
+    "id": "7bbb2c75-d858-4b1a-93c9-bc1e4f11ac47",
+    "user_id": "1a14ca6vepk",
+    "session_id": "1743572851029",
+    "content": "I am an AI assistant designed to analyze prescriptions and provide drug information. I cannot diagnose medical conditions or recommend specific treatments. Pain in the stomach can have many causes, and it's important to get an accurate diagnosis from a healthcare professional.\n\nTo get the right treatment, please see a doctor or other qualified healthcare provider. They can evaluate your symptoms, perform any necessary tests, and determine the cause of your stomach pain.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T11:18:04.760442"
+  }
+]

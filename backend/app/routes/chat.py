@@ -1,11 +1,13 @@
-from fastapi import APIRouter, HTTPException, Body, Depends
+from fastapi import APIRouter, HTTPException, Body
 from pydantic import BaseModel
 import uuid
 from datetime import datetime
+import logging
 
 from app.services.ai_service import generate_ai_response
-from app.models.database import db
-from app.utils.auth_utils import get_current_user
+from app.models.mock_db import db
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -15,10 +17,13 @@ class ChatRequest(BaseModel):
     session_id: str = None
 
 @router.post("/")
-async def chat_with_ai(request: ChatRequest = Body(...), user=Depends(get_current_user)):
+async def chat_with_ai(request: ChatRequest = Body(...)):
     try:
+        logger.info(f"Chat request from user {request.user_id}: {request.message[:50]}...")
+        
         # Generate AI response using Gemini
         ai_response = generate_ai_response(request.message)
+        logger.info(f"Generated AI response: {ai_response[:50]}...")
         
         # Create a session ID if none provided
         session_id = request.session_id or str(uuid.uuid4())
@@ -52,4 +57,5 @@ async def chat_with_ai(request: ChatRequest = Body(...), user=Depends(get_curren
             "bot_message_id": bot_message["id"]
         }
     except Exception as e:
+        logger.error(f"Error processing chat: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error processing chat: {str(e)}")

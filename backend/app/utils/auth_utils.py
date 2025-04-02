@@ -1,40 +1,36 @@
-from fastapi import Header, HTTPException, Depends
-from typing import Dict, Any, Optional
-import uuid
+from fastapi import Depends, HTTPException, Header
+from typing import Optional
+from app.models.mock_db import db
 
-from app.models.database import db
-
-# Simple mock user for testing
-DEFAULT_USER = {
-    "id": "1",
-    "email": "test@example.com",
-    "fullName": "Test User",
-    "createdAt": "2023-01-01T00:00:00Z",
-    "lastLogin": "2023-01-01T00:00:00Z"
-}
-
-def get_current_user(authorization: Optional[str] = Header(None)) -> Dict[str, Any]:
+async def get_current_user(authorization: Optional[str] = Header(None)):
     """
-    Simple mock auth for development - in a real app, this would validate JWT tokens
+    Mock function to get the current user from a token
+    In a real app, this would validate the JWT token
     """
-    # For simplicity, we'll return a default user
-    # You can enhance this later with proper token validation
-    
     if not authorization:
-        # Create and return default user if no token provided
-        user = db.get_user(DEFAULT_USER["id"])
-        if not user:
-            user = db.create_user(DEFAULT_USER)
-        return user
+        return {
+            "id": "mock-user-id",
+            "email": "test@example.com",
+            "fullName": "Test User"
+        }
     
-    # Handle "Bearer token" format
-    if authorization.startswith("Bearer "):
-        token = authorization.replace("Bearer ", "")
-        # In a real app, you would validate the token
-        # For now, just return the default user
-        user = db.get_user(DEFAULT_USER["id"])
-        if not user:
-            user = db.create_user(DEFAULT_USER)
-        return user
+    # Extract user ID from mock token
+    # Format is "mock-jwt-token-{user_id}"
+    try:
+        if authorization.startswith("Bearer "):
+            token = authorization.replace("Bearer ", "")
+            
+            if token.startswith("mock-jwt-token-"):
+                user_id = token.replace("mock-jwt-token-", "")
+                user = db.get_user(user_id)
+                if user:
+                    return user
+    except Exception:
+        pass
     
-    raise HTTPException(status_code=401, detail="Invalid authorization header")
+    # Default mock user
+    return {
+        "id": "mock-user-id",
+        "email": "test@example.com",
+        "fullName": "Test User"
+    }

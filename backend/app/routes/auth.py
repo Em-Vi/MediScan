@@ -1,11 +1,15 @@
 from fastapi import APIRouter, HTTPException, Depends, Body
 from pydantic import BaseModel
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 import uuid
 from datetime import datetime
+import logging
 
+# Import the mock database instead of Supabase
+from app.models.mock_db import db
 from app.utils.auth_utils import get_current_user
-from app.models.database import db
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -19,41 +23,64 @@ class SignupRequest(BaseModel):
     fullName: str
 
 @router.get("/me")
-async def get_user(user=Depends(get_current_user)):
-    return {"user": user}
+async def get_user(user_id: Optional[str] = None):
+    """Mock current user endpoint - for testing, accept a user_id query param"""
+    if user_id:
+        # Look up user by ID
+        user = db.get_user(user_id)
+        if user:
+            return {"user": user}
+    
+    # For testing, return a mock user
+    mock_user = {
+        "id": "mock-user-id",
+        "email": "test@example.com",
+        "fullName": "Test User",
+        "createdAt": datetime.now().isoformat(),
+        "lastLogin": datetime.now().isoformat()
+    }
+    return {"user": mock_user}
 
 @router.post("/login")
 async def login(request: LoginRequest = Body(...)):
     """Simple mock login"""
-    # In a real app, you would validate credentials
-    # For development, we'll create/return a user based on the email
-    
-    user = {
-        "id": str(uuid.uuid4()),
-        "email": request.email,
-        "fullName": request.email.split('@')[0],
-        "createdAt": datetime.now().isoformat(),
-        "lastLogin": datetime.now().isoformat()
-    }
+    logger.info(f"Login attempt for email: {request.email}")
     
     # Check if user exists
-    users = [u for u in db._read_file('users.json') if u.get('email') == request.email]
-    if users:
-        user = users[0]
+    users = db._read_file("users.json")
+    existing_users = [u for u in users if u.get("email") == request.email]
+    
+    if existing_users:
+        user = existing_users[0]
+        # Update last login time
+        user["lastLogin"] = datetime.now().isoformat()
+        db._write_file("users.json", users)
     else:
-        user = db.create_user(user)
+        # Create a new user for testing
+        user = {
+            "id": str(uuid.uuid4()),
+            "email": request.email,
+            "fullName": request.email.split('@')[0],
+            "createdAt": datetime.now().isoformat(),
+            "lastLogin": datetime.now().isoformat()
+        }
+        db.create_user(user)
+    
+    logger.info(f"User logged in: {user['id']}")
     
     return {
         "user": user,
-        "token": "mock-jwt-token"  # In a real app, generate a proper JWT
+        "token": f"mock-jwt-token-{user['id']}"  # In a real app, generate a proper JWT
     }
 
 @router.post("/signup")
 async def signup(request: SignupRequest = Body(...)):
     """Simple mock signup"""
+    logger.info(f"Signup attempt for email: {request.email}")
+    
     # Check if user already exists
-    users = [u for u in db._read_file('users.json') if u.get('email') == request.email]
-    if users:
+    users = db._read_file("users.json")
+    if any(u.get("email") == request.email for u in users):
         raise HTTPException(status_code=400, detail="User already exists")
     
     user = {
@@ -65,8 +92,9 @@ async def signup(request: SignupRequest = Body(...)):
     }
     
     db.create_user(user)
+    logger.info(f"User created: {user['id']}")
     
     return {
         "user": user,
-        "token": "mock-jwt-token"  # In a real app, generate a proper JWT
+        "token": f"mock-jwt-token-{user['id']}"  # In a real app, generate a proper JWT
     }
