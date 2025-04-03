@@ -9,7 +9,6 @@ uvicorn==0.34.0
 
 
 python-multipart==0.0.9
-pydantic==2.5.3
 requests==2.31.0
 
 
