@@ -78,5 +78,197 @@
     "content": "I am an AI assistant designed to analyze prescriptions and provide drug information. I cannot diagnose medical conditions or recommend specific treatments. Pain in the stomach can have many causes, and it's important to get an accurate diagnosis from a healthcare professional.\n\nTo get the right treatment, please see a doctor or other qualified healthcare provider. They can evaluate your symptoms, perform any necessary tests, and determine the cause of your stomach pain.\n",
     "sender": "bot",
     "timestamp": "2025-04-02T11:18:04.760442"
+  },
+  {
+    "id": "b2d409c0-f81f-4011-824a-64d9ce5e3396",
+    "user_id": "elo4jyctuv",
+    "session_id": "1743587360604",
+    "content": "this is my prescription",
+    "sender": "user",
+    "timestamp": "2025-04-02T15:41:15.880699"
+  },
+  {
+    "id": "23a23b10-185a-4250-b605-b2c4d0e27d80",
+    "user_id": "elo4jyctuv",
+    "session_id": "1743587360604",
+    "content": "Okay, I'm ready. Please provide me with the prescription details so I can begin the analysis. I need information such as:\n\n*   **Patient Information:** Age, weight (if available).\n*   **Medication List:** Drug name, dosage, frequency, route of administration, and duration.\n*   **Any other relevant medical conditions or medications the patient is taking.**\n\nThe more information you provide, the more accurate and comprehensive my analysis will be.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T15:41:15.883732"
+  },
+  {
+    "id": "9c4568d6-f3cd-4dd9-a939-2efc71e2530d",
+    "user_id": "elo4jyctuv",
+    "session_id": "1743587360604",
+    "content": "",
+    "sender": "user",
+    "timestamp": "2025-04-02T15:41:30.917190"
+  },
+  {
+    "id": "1366854a-9afa-4bcb-8c30-be3c4aa90121",
+    "user_id": "elo4jyctuv",
+    "session_id": "1743587360604",
+    "content": "Okay, I'm ready. Please provide the prescription or drug information you want me to analyze.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T15:41:30.921214"
+  },
+  {
+    "id": "b1186dd1-4a9d-4848-b56f-c7eba3248d50",
+    "user_id": "elo4jyctuv",
+    "session_id": "1743587360604",
+    "content": "",
+    "sender": "user",
+    "timestamp": "2025-04-02T15:48:27.004569"
+  },
+  {
+    "id": "e3793ad7-24c3-4945-aa94-84cda7e606e6",
+    "user_id": "elo4jyctuv",
+    "session_id": "1743587360604",
+    "content": "Okay, I'm ready. Please provide me with the prescription or drug information you want me to analyze. I will do my best to provide a comprehensive and accurate response.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T15:48:27.004569"
+  },
+  {
+    "id": "06296018-1927-455e-bb15-27cf4aa7b1a5",
+    "user_id": "elo4jyctuv",
+    "session_id": "1743587360604",
+    "content": "",
+    "sender": "user",
+    "timestamp": "2025-04-02T16:18:18.175960"
+  },
+  {
+    "id": "bbc68c0f-e41f-420e-9b36-8d734cb4f3e7",
+    "user_id": "elo4jyctuv",
+    "session_id": "1743587360604",
+    "content": "Okay, I'm ready. Please provide the prescription details or drug query you want me to analyze. I will do my best to provide you with accurate and helpful information.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T16:18:18.175960"
+  },
+  {
+    "id": "46e24371-2c65-4f6c-801d-91da63e60cc5",
+    "user_id": "elo4jyctuv",
+    "session_id": "1743587360604",
+    "content": "",
+    "sender": "user",
+    "timestamp": "2025-04-02T16:18:18.966288"
+  },
+  {
+    "id": "f73ea40d-ea62-40c2-8d9b-4841f92976a9",
+    "user_id": "elo4jyctuv",
+    "session_id": "1743587360604",
+    "content": "Okay, I'm ready. Please provide the prescription details or drug-related question. I will do my best to assist you.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T16:18:18.966288"
+  },
+  {
+    "id": "a2ad7215-f46e-4018-b750-bbbe14424ef8",
+    "user_id": "s4mx9laxp",
+    "session_id": "1743592811957",
+    "content": "OH I SEE",
+    "sender": "user",
+    "timestamp": "2025-04-02T17:26:28.906796"
+  },
+  {
+    "id": "c2fe9f10-1e6f-4c98-9d48-a5d34ec13675",
+    "user_id": "s4mx9laxp",
+    "session_id": "1743592811957",
+    "content": "Please provide me with the prescription details or the drug-related question you have. I need information such as:\n\n*   **Drug names and dosages**\n*   **Patient age and weight (if applicable)**\n*   **Any other relevant medical conditions or medications the patient is taking**\n\nThe more information you provide, the better I can assist you.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T17:26:28.972506"
+  },
+  {
+    "id": "8eade9ce-c035-4210-8602-dd853c532eb4",
+    "user_id": "s4mx9laxp",
+    "session_id": "1743592811957",
+    "content": "what is abciximab",
+    "sender": "user",
+    "timestamp": "2025-04-02T17:26:49.607749"
+  },
+  {
+    "id": "c2b5932e-40c1-414b-a05d-7c77e8e61db7",
+    "user_id": "s4mx9laxp",
+    "session_id": "1743592811957",
+    "content": "**Abciximab**\n\n**Mechanism of Action:**\nAbciximab is a glycoprotein IIb/IIIa receptor antagonist. It inhibits platelet aggregation by preventing the binding of fibrinogen, von Willebrand factor, and other adhesive ligands to the glycoprotein IIb/IIIa receptor sites on platelets.\n\n**Indications:**\n*   As an adjunct to percutaneous transluminal coronary angioplasty (PTCA) or atherectomy for the prevention of cardiac ischemic complications in patients at high risk for abrupt closure of the treated coronary vessel.\n*   Unstable angina unresponsive to conventional medical therapy when percutaneous coronary intervention (PCI) is planned within 24 hours.\n\n**Contraindications:**\n*   Active internal bleeding\n*   Recent (within 6 weeks) major surgery or trauma\n*   History of stroke within 2 years\n*   Thrombocytopenia\n*   Hypersensitivity to abciximab or murine proteins\n*   Severe uncontrolled hypertension\n\n**Side Effects:**\n*   **Common:** Bleeding (major and minor), thrombocytopenia, hypotension, nausea, vomiting.\n*   **Serious:** Intracranial hemorrhage, pulmonary hemorrhage, retroperitoneal bleeding, anaphylaxis.\n\n**Metabolism:**\nAbciximab is not metabolized by the liver.\n\n**Excretion:**\nThe drug is cleared from the plasma primarily via platelet binding. The unbound drug is cleared by other pathways.\n\n**Additional Information:**\n*   Abciximab is administered intravenously.\n*   Careful monitoring for bleeding is essential during and after abciximab administration.\n\nThis information is intended to support pharmacists and healthcare professionals. Always consult the full prescribing information and relevant guidelines for complete details.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T17:26:49.609914"
+  },
+  {
+    "id": "4bec9c57-3a19-4916-b0c7-8aa9b7fd027c",
+    "user_id": "s4mx9laxp",
+    "session_id": "1743592811957",
+    "content": "who are you",
+    "sender": "user",
+    "timestamp": "2025-04-02T17:27:03.183620"
+  },
+  {
+    "id": "2a493a44-4797-4adb-bf88-0d9927ab6700",
+    "user_id": "s4mx9laxp",
+    "session_id": "1743592811957",
+    "content": "I am AutoDoc, an AI-powered pharmacy assistant designed to support pharmacists in analyzing prescriptions, detecting drug interactions, providing patient counseling points, and assessing prescription safety. I aim to provide evidence-based and easily understandable information to support clinical decision-making.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T17:27:03.191758"
+  },
+  {
+    "id": "f98434b2-4c5f-46c0-9019-4d497cfd0054",
+    "user_id": "tqopyvh4sxd",
+    "session_id": "1743595041586",
+    "content": "do you knwo any good movies",
+    "sender": "user",
+    "timestamp": "2025-04-02T17:27:39.325517"
+  },
+  {
+    "id": "71b6d05c-f882-406a-8194-8b52aab518ff",
+    "user_id": "tqopyvh4sxd",
+    "session_id": "1743595041586",
+    "content": "As a pharmacy assistant, I am designed to provide drug-related and healthcare information, and do not have information about movies.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T17:27:39.325517"
+  },
+  {
+    "id": "e90cb76c-a454-4b71-9a32-54c3bf3c09d2",
+    "user_id": "tqopyvh4sxd",
+    "session_id": "1743595041586",
+    "content": "what ai model are you using",
+    "sender": "user",
+    "timestamp": "2025-04-02T17:27:54.385834"
+  },
+  {
+    "id": "9ccbaf44-2292-46df-8895-8f3861100f42",
+    "user_id": "tqopyvh4sxd",
+    "session_id": "1743595041586",
+    "content": "I am a large language model, trained by Google.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T17:27:54.389854"
+  },
+  {
+    "id": "4d09aa39-3a2d-4321-9a5e-7a3d07ea2413",
+    "user_id": "tqopyvh4sxd",
+    "session_id": "1743595041586",
+    "content": "what is your model name",
+    "sender": "user",
+    "timestamp": "2025-04-02T17:28:07.374926"
+  },
+  {
+    "id": "2d648d62-5cae-4e1f-b259-9a1059cb6e51",
+    "user_id": "tqopyvh4sxd",
+    "session_id": "1743595041586",
+    "content": "My name is AutoDoc, an AI-powered pharmacy assistant.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-02T17:28:07.374926"
+  },
+  {
+    "id": "8feea4a8-ad3b-40ca-8d01-4628593aee18",
+    "user_id": "se7ivyfs63e",
+    "session_id": "1743662247384",
+    "content": "hello",
+    "sender": "user",
+    "timestamp": "2025-04-03T12:07:36.865255"
+  },
+  {
+    "id": "eb9b1e5f-4be6-4af1-9215-2eb37bfe7b0a",
+    "user_id": "se7ivyfs63e",
+    "session_id": "1743662247384",
+    "content": "Hello! I am AutoDoc, your AI-powered pharmacy assistant. I am ready to assist you with prescription analysis, drug interaction checks, patient counseling points, and more. Please provide me with the necessary information, such as drug names, dosages, patient age, and any relevant medical history, so I can assist you effectively.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-03T12:07:36.868260"
   }
 ]

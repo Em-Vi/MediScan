@@ -14,6 +14,9 @@ if GEMINI_API_KEY:
     logger.info("GEMINI_API_KEY is set. Configuring Gemini API...")
     genai.configure(api_key=GEMINI_API_KEY)
     model = genai.GenerativeModel("gemini-2.0-flash")
+    logger.info("Gemini model initialized successfully")
+else:
+    logger.warning("GEMINI_API_KEY is not set. AI responses will be mocked.")
 
 # System prompt for context
 SYSTEM_PROMPT = """
@@ -55,19 +58,22 @@ Format your response in clear sections with appropriate markdown formatting. If 
 
 def generate_ai_response(message: str) -> str:
     try:
-         # Add debugging output
-        logger.info(GEMINI_API_KEY)
+        logger.info(f"Generating AI response for message: {message[:50]}...")
+        
         if not GEMINI_API_KEY:
-            # Return mock response if API key is not available
+            logger.warning("No API key available, returning mock response")
             return "This is a mock response because the GEMINI_API_KEY is not set."
             
         # Combine system prompt with user message
         full_prompt = f"{SYSTEM_PROMPT}\n\nUser: {message}"
+        logger.info("Sending prompt to Gemini API")
         response = model.generate_content(full_prompt)
+        logger.info("Response received from Gemini API")
+        
         return response.text
     except Exception as e:
         error_message = str(e)
-        print(f"Error generating AI response: {error_message}")
+        logger.error(f"Error generating AI response: {error_message}")
         
         if "API key not valid" in error_message.lower():
             return "Error: The Gemini API key is not valid. Please check your API key."
@@ -87,35 +93,50 @@ async def analyze_image(image_path: str) -> str:
         String containing the analysis results
     """
     try:
+        logger.info(f"Starting image analysis for file: {image_path}")
+        
         if not GEMINI_API_KEY:
+            logger.warning("No API key available, returning mock response")
             return "Image analysis is not available because the GEMINI_API_KEY is not set."
         
         if not os.path.exists(image_path):
+            logger.error(f"Image file not found: {image_path}")
             return "Error: Image file not found."
         
         # Read image file as bytes
+        logger.info(f"Reading image file: {image_path}")
         with open(image_path, "rb") as f:
             image_data = f.read()
         
+        logger.info(f"Read {len(image_data)} bytes from image file")
+        
         # Extract text using pytesseract OCR
+        logger.info("Calling pytesseract OCR to extract text from image")
         extracted_text = extract_text_from_image(image_data)
         
         if not extracted_text or extracted_text.strip() == "":
+            logger.warning("No text was extracted from the image")
             return "No text could be extracted from the image. The image might be unclear, rotated, or doesn't contain readable text."
         
+        logger.info(f"Successfully extracted text ({len(extracted_text)} characters)")
+        logger.info(f"Extracted text sample: {extracted_text[:200]}..." if len(extracted_text) > 200 else f"Extracted text: {extracted_text}")
+        
         # Format prompt with extracted text
+        logger.info("Formatting prompt with extracted text")
         analysis_prompt = PRESCRIPTION_ANALYSIS_PROMPT.format(extracted_text=extracted_text)
         
         # Combine system prompt with specific analysis prompt
         full_prompt = f"{SYSTEM_PROMPT}\n\n{analysis_prompt}"
         
         # Send to Gemini for analysis
+        logger.info("Sending prompt to Gemini API for analysis")
         response = model.generate_content(full_prompt)
+        logger.info("Response received from Gemini API")
         
         return response.text
     except Exception as e:
         error_message = str(e)
-        print(f"Error analyzing image: {error_message}")
+        logger.error(f"Error analyzing image: {error_message}")
         
         if "API key not valid" in error_message.lower():
             return "Error: The Gemini API key is not valid. Please check your API key."

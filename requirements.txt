@@ -1,6 +1,5 @@
 fastapi==0.115.12
 Pillow==11.1.0
-protobuf==6.30.2
 pydantic==2.11.1
 pytesseract==0.3.13
 python-dotenv==1.1.0
