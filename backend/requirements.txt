@@ -6,3 +6,24 @@ pytesseract==0.3.13
 python-dotenv==1.1.0
 supabase==2.15.0
 uvicorn==0.34.0
+
+
+python-multipart==0.0.9
+pydantic==2.5.3
+requests==2.31.0
+
+
+# Database
+
+gotrue
+httpx
+
+
+# AI services
+google-generativeai==0.3.2
+
+
+# Utilities
+uuid==1.30
+python-jose[cryptography]==3.3.0  # For JWT tokens
+bcrypt==4.1.2  # For password hashing
