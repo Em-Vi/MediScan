@@ -38,15 +38,11 @@ import {
   loadChatSessions,
   createNewChatSession,
   deleteChatSession,
-  uploadChatFile
+  uploadChatFile,
+  uploadAndAnalyzeImage // Add this import
 } from "@/lib/chat-service"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { v4 as uuidv4 } from 'uuid'; // Make sure to import uuid
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu"
 
 export default function ChatPage() {
   const router = useRouter()
@@ -218,15 +214,77 @@ export default function ChatPage() {
   }
 
   const handleFileUpload = async (file: File) => {
-    if (!user) return
+    if (!user || !currentSessionId) return;
     
-    const attachment = await uploadChatFile(user.id, file)
-    if (attachment) {
-      setPendingAttachment(attachment)
+    setIsTyping(true); // Use typing indicator to show analysis is in progress
+    
+    try {
+      // Check if it's an image file that might be a prescription
+      if (file.type.startsWith('image/')) {
+        // Ask user if they want to analyze this as a prescription
+        if (confirm("Do you want to analyze this image as a prescription?")) {
+          // Use the prescription analysis flow
+          const result = await uploadAndAnalyzeImage(user.id, file);
+          
+          if (result) {
+            // Add user message with the image
+            const userMessage: Message = {
+              id: uuidv4(),
+              content: "Can you analyze this prescription for me?",
+              sender: "user",
+              timestamp: new Date(),
+              attachments: [result.attachment]
+            };
+            
+            setMessages(prev => [...prev, userMessage]);
+            
+            // Wait a moment for better UX
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Add AI response with the analysis
+            const aiMessage: Message = {
+              id: uuidv4(),
+              content: result.analysis,
+              sender: "bot",
+              timestamp: new Date()
+            };
+            
+            setMessages(prev => [...prev, aiMessage]);
+            setLatestMessageId(aiMessage.id);
+            
+            // Save chat history
+            saveChatHistory(user.id, [...messages, userMessage, aiMessage], currentSessionId);
+            
+            // Clear file upload UI
+            setShowFileUpload(false);
+            return;
+          }
+        }
+      }
+      
+      // Default file upload behavior if not a prescription or user declined analysis
+      const attachment = await uploadChatFile(user.id, file);
+      if (attachment) {
+        setPendingAttachment(attachment);
+      }
+      setShowFileUpload(false);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      
+      // Add error message
+      const errorMessage: Message = {
+        id: uuidv4(),
+        content: "I'm sorry, I couldn't process that image. Please try again with a clearer image.",
+        sender: "bot",
+        timestamp: new Date()
+      };
+      
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
+      setShowFileUpload(false);
     }
-    setShowFileUpload(false)
   }
-  
 
   const cancelFileUpload = () => {
     setShowFileUpload(false)

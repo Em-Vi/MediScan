@@ -90,11 +90,22 @@ export const analyzePrescription = async (userId: string, file: File) => {
   formData.append("user_id", userId);
   formData.append("file", file);
 
-  const response = await fetch(`${API_URL}/image/analyze`, {
-    method: "POST",
-    body: formData,
-  });
-  return response.json();
+  console.log(`Sending file: ${file.name}, size: ${file.size}, type: ${file.type}`);
+  
+  try {
+    const response = await fetch(`${API_URL}/image/analyze`, {
+      method: "POST",
+      body: formData,
+    });
+    
+    console.log("Response status:", response.status);
+    const data = await response.json();
+    console.log("Analysis response:", data);
+    return data;
+  } catch (error) {
+    console.error("Error analyzing image:", error);
+    throw error;
+  }
 };
 
 // Example usage in your component:

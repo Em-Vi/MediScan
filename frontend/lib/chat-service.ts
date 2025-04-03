@@ -1,4 +1,4 @@
-import { sendMessage, getChatHistory, getSessionMessages, uploadImage } from './api';
+import { sendMessage, getChatHistory, getSessionMessages, uploadImage, analyzePrescription } from './api';
 
 export type FileType = "image" | "audio" | "document" | "text"
 
@@ -279,3 +279,33 @@ export const uploadChatFile = async (userId: string, file: File): Promise<Messag
     return null;
   }
 }
+
+// File upload and analyze function
+export const uploadAndAnalyzeImage = async (userId: string, file: File): Promise<{
+  attachment: MessageAttachment;
+  analysis: string;
+} | null> => {
+  try {
+    const result = await analyzePrescription(userId, file);
+    
+    if (result.image && result.analysis) {
+      const attachment: MessageAttachment = {
+        id: result.image.id,
+        url: result.image.url,
+        type: "image",
+        name: result.image.filename,
+        size: file.size,
+        fileExtension: file.name.split('.').pop() || ""
+      };
+      
+      return {
+        attachment,
+        analysis: result.analysis
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error("Error uploading and analyzing image:", error);
+    return null;
+  }
+};
