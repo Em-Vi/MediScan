@@ -366,5 +366,21 @@
     "content": "Okay, I'm ready to assist you. Please provide me with the prescription details, including the patient's age, weight (if available), drug names, dosages, and any other relevant information. I can then analyze the prescription for drug interactions, appropriate dosing, and patient counseling points.\n",
     "sender": "bot",
     "timestamp": "2025-04-03T13:50:47.591060"
+  },
+  {
+    "id": "fd8986e1-07ff-45a8-9d18-08f3f118635c",
+    "user_id": "wfk2yys1eqp",
+    "session_id": "1743708832037",
+    "content": "help mee",
+    "sender": "user",
+    "timestamp": "2025-04-04T01:07:07.976861"
+  },
+  {
+    "id": "81d70677-9d61-446e-8953-a749fb5282fe",
+    "user_id": "wfk2yys1eqp",
+    "session_id": "1743708832037",
+    "content": "Okay, I'm ready to assist you. Please provide me with the prescription details, patient information (age, weight), or drug-related questions you have. The more information you give me, the better I can help you. I can analyze prescriptions for:\n\n*   **Drug Interactions:** Identify potential interactions and their severity.\n*   **Patient Counseling Points:** Generate key information to share with patients.\n*   **Prescription Safety Assessment:** Check for appropriate dosing and contraindications based on age and weight.\n*   **General Drug Queries:** Answer questions about specific medications.\n\nJust let me know what you need!\n",
+    "sender": "bot",
+    "timestamp": "2025-04-04T01:07:07.981663"
   }
 ]

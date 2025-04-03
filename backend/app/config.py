@@ -6,6 +6,7 @@ load_dotenv()
 
 # Google API key for Gemini
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+OCR_SPACE_API_KEY = os.getenv("OCR_SPACE_API_KEY")
 
 # Supabase credentials
 SUPABASE_URL = os.getenv("SUPABASE_URL")

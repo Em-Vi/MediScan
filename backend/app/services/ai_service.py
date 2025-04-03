@@ -1,6 +1,7 @@
 import os
 import google.generativeai as genai
-from app.config import GEMINI_API_KEY
+import requests
+from app.config import GEMINI_API_KEY,OCR_SPACE_API_KEY
 import logging
 from app.services.image_service import extract_text_from_image
 
@@ -83,7 +84,7 @@ def generate_ai_response(message: str) -> str:
 async def analyze_image(image_path: str) -> str:
     """
     Analyze a prescription image by:
-    1. Extracting text using pytesseract OCR
+    1. Extracting text using OCR.space API
     2. Sending the extracted text to Gemini for analysis
     
     Args:
@@ -99,21 +100,65 @@ async def analyze_image(image_path: str) -> str:
             logger.warning("No API key available, returning mock response")
             return "Image analysis is not available because the GEMINI_API_KEY is not set."
         
+        if not OCR_SPACE_API_KEY:
+            logger.warning("No OCR.space API key available")
+            return "Image analysis is not available because the OCR_SPACE_API_KEY is not set."
+        
         if not os.path.exists(image_path):
             logger.error(f"Image file not found: {image_path}")
             return "Error: Image file not found."
         
-        # Read image file as bytes
-        logger.info(f"Reading image file: {image_path}")
-        with open(image_path, "rb") as f:
-            image_data = f.read()
+        # Extract text using OCR.space API
+        logger.info(f"Sending image to OCR.space API: {image_path}")
         
-        logger.info(f"Read {len(image_data)} bytes from image file")
+        url = "https://api.ocr.space/parse/image"
         
-        # Extract text using pytesseract OCR
-        logger.info("Calling pytesseract OCR to extract text from image")
-        extracted_text = extract_text_from_image(image_data)
+        # Set headers with API key
+        headers = {
+            "apikey": OCR_SPACE_API_KEY
+        }
         
+        # Prepare parameters
+        params = {
+            "language": "eng",
+            "isOverlayRequired": "false",
+            "detectOrientation": "true",
+        }
+        
+        with open(image_path, "rb") as file:
+            files = {"file": file}
+            logger.info("Sending request to OCR.space API")
+            response = requests.post(url, headers=headers, params=params, files=files)
+        
+        # Check for successful response
+        if response.status_code != 200:
+            logger.error(f"OCR.space API error: {response.status_code} - {response.text}")
+            return "Error: The OCR service returned an error. Please try again later."
+        
+        # Parse the OCR response
+        ocr_result = response.json()
+        logger.info(f"OCR.space response received: {ocr_result.get('OCRExitCode')}")
+        
+        # Check for OCR exit code (1 = success)
+        if ocr_result.get("OCRExitCode") != 1:
+            error_msg = ocr_result.get("ErrorMessage", "Unknown OCR error")
+            logger.error(f"OCR.space processing error: {error_msg}")
+            return f"OCR processing error: {error_msg}"
+        
+        # Extract the parsed text from OCR result
+        parsed_results = ocr_result.get("ParsedResults", [])
+        if not parsed_results:
+            logger.warning("No parsed results in OCR.space response")
+            return "No text could be extracted from the image. The image might be unclear or doesn't contain readable text."
+        
+        # Combine all parsed text from results
+        extracted_text = ""
+        for result in parsed_results:
+            text = result.get("ParsedText", "")
+            if text:
+                extracted_text += text + "\n"
+        
+        # Check if we got any text
         if not extracted_text or extracted_text.strip() == "":
             logger.warning("No text was extracted from the image")
             return "No text could be extracted from the image. The image might be unclear, rotated, or doesn't contain readable text."
@@ -137,8 +182,10 @@ async def analyze_image(image_path: str) -> str:
     except Exception as e:
         error_message = str(e)
         logger.error(f"Error analyzing image: {error_message}")
+        import traceback
+        logger.error(traceback.format_exc())
         
         if "API key not valid" in error_message.lower():
-            return "Error: The Gemini API key is not valid. Please check your API key."
+            return "Error: The API key is not valid. Please check your API keys."
             
         return f"I'm sorry, I encountered an error while analyzing the image: {error_message}"
