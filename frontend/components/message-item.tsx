@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { FileText, Download, Play, Pause, Image, File } from "lucide-react"
 import type { Message } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
+import { MarkdownMessage } from "@/components/markdown-message"
 
 interface MessageItemProps {
   message: Message
@@ -159,11 +160,22 @@ export function MessageItem({ message, isLatest = false }: MessageItemProps) {
   return (
     <div ref={messageRef} className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}>
       <div className={`${message.sender === "user" ? "chat-bubble-user" : "chat-bubble-bot"} max-w-[85%] break-words`}>
-        {message.content && <div className="mb-1 whitespace-pre-wrap">{message.content}</div>}
+        {/* Message content - render as markdown for bot messages */}
+        {message.content && (
+          <div className="mb-1">
+            {message.sender === "user" ? (
+              <div className="whitespace-pre-wrap">{message.content}</div>
+            ) : (
+              <MarkdownMessage content={message.content} />
+            )}
+          </div>
+        )}
 
+        {/* Attachments */}
         {message.attachments &&
           message.attachments.map((attachment) => <div key={attachment.id}>{renderAttachment(attachment)}</div>)}
 
+        {/* Timestamp */}
         <div className="text-xs opacity-70 text-right">{formatTime(message.timestamp)}</div>
       </div>
     </div>

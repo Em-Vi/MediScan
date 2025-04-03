@@ -1,2 +1,4 @@
 frontend_custom/
 app.py
+node_modules/
+package-lock.json

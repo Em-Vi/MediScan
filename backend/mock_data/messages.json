@@ -270,5 +270,101 @@
     "content": "Hello! I am AutoDoc, your AI-powered pharmacy assistant. I am ready to assist you with prescription analysis, drug interaction checks, patient counseling points, and more. Please provide me with the necessary information, such as drug names, dosages, patient age, and any relevant medical history, so I can assist you effectively.\n",
     "sender": "bot",
     "timestamp": "2025-04-03T12:07:36.868260"
+  },
+  {
+    "id": "1a9caece-ee8d-4d46-9dd4-b48be4850472",
+    "user_id": "mgt4u0w5pd",
+    "session_id": "1743666176574",
+    "content": "hello...can you tell me for what is paracetamol used?",
+    "sender": "user",
+    "timestamp": "2025-04-03T13:13:17.250168"
+  },
+  {
+    "id": "d87d8dda-f7bb-49b5-86e0-5285e1cc2072",
+    "user_id": "mgt4u0w5pd",
+    "session_id": "1743666176574",
+    "content": "Paracetamol is used for:\n\n*   **Pain Relief:** Mild to moderate pain such as headaches, muscle aches, backaches, toothaches, and pain associated with colds and flu.\n*   **Fever Reduction:** It helps to reduce fever.\n\nIt is important to follow the recommended dosage and not exceed the maximum daily dose to avoid liver damage.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-03T13:13:17.303181"
+  },
+  {
+    "id": "d81f44cf-14ff-43d8-90fc-7fcf7957bf2c",
+    "user_id": "mgt4u0w5pd",
+    "session_id": "1743666176574",
+    "content": "okay ill upload a prescription now",
+    "sender": "user",
+    "timestamp": "2025-04-03T13:13:33.422076"
+  },
+  {
+    "id": "75fc9cdd-29fc-4b3a-9847-ecd814057404",
+    "user_id": "mgt4u0w5pd",
+    "session_id": "1743666176574",
+    "content": "Understood. Please upload the prescription. I will analyze it for drug interactions, provide patient counseling points, assess prescription safety, and answer any related queries you have. I'm ready when you are.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-03T13:13:33.437749"
+  },
+  {
+    "id": "b692fd75-113d-40da-85a3-990c857411e7",
+    "user_id": "mgt4u0w5pd",
+    "session_id": "1743666176574",
+    "content": "thanks",
+    "sender": "user",
+    "timestamp": "2025-04-03T13:15:51.966153"
+  },
+  {
+    "id": "0cc66893-ddfc-45c5-9881-7066afcaa230",
+    "user_id": "mgt4u0w5pd",
+    "session_id": "1743666176574",
+    "content": "Okay, I'm ready to assist you with analyzing prescriptions, detecting drug interactions, providing patient counseling points, and assessing prescription safety. Please provide me with the necessary information, such as the patient's age, weight, prescribed medications, and any other relevant details. I'll do my best to provide you with accurate and helpful information.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-03T13:15:51.971740"
+  },
+  {
+    "id": "9dcc2a94-5597-42cd-b51d-63afac1d1099",
+    "user_id": "wmbyxgbaxrn",
+    "session_id": "1743667492855",
+    "content": "tell me anout asythromycin",
+    "sender": "user",
+    "timestamp": "2025-04-03T13:35:19.153422"
+  },
+  {
+    "id": "d05f0df9-4e17-4566-b586-5381601c644b",
+    "user_id": "wmbyxgbaxrn",
+    "session_id": "1743667492855",
+    "content": "## Azithromycin: Drug Information\n\nHere's a summary of key information about azithromycin:\n\n**Mechanism of Action:**\n\n*   Azithromycin is a macrolide antibiotic that inhibits bacterial protein synthesis by binding to the 23S rRNA of the 50S ribosomal subunit. This action prevents the translocation of peptide chains, thus inhibiting bacterial growth.\n\n**Indications:**\n\n*   **Respiratory Tract Infections:** Acute bacterial exacerbations of chronic bronchitis, community-acquired pneumonia, pharyngitis/tonsillitis.\n*   **Skin and Soft Tissue Infections:** Uncomplicated skin and soft tissue infections.\n*   **Sexually Transmitted Infections:** Nongonococcal urethritis and cervicitis due to *Chlamydia trachomatis*.\n*   **Other Infections:** Acute otitis media, acute sinusitis.\n\n**Contraindications:**\n\n*   Hypersensitivity to azithromycin, erythromycin, other macrolides, or ketolides.\n*   History of cholestatic jaundice/hepatic dysfunction associated with prior azithromycin use.\n\n**Common Side Effects:**\n\n*   **Gastrointestinal:** Nausea, vomiting, diarrhea, abdominal pain.\n*   **Other:** Headache, dizziness.\n\n**Serious Adverse Effects:**\n\n*   **QT Prolongation:** Can prolong the QT interval, potentially leading to torsades de pointes (a life-threatening arrhythmia). Use with caution in patients with known QT prolongation, electrolyte imbalances, or those taking other QT-prolonging drugs.\n*   **Hepatotoxicity:** Can cause liver inflammation and dysfunction.\n*   ***Clostridium difficile*-Associated Diarrhea (CDAD):** Can alter normal flora of the colon, leading to overgrowth of *C. difficile*.\n*   **Hypersensitivity Reactions:** Allergic reactions ranging from mild rash to anaphylaxis.\n\n**Metabolism and Excretion:**\n\n*   **Metabolism:** Hepatic metabolism via the cytochrome P450 system.\n*   **Excretion:** Primarily excreted unchanged in bile.\n\n**Patient Counseling Points:**\n\n*   Take azithromycin exactly as prescribed by your doctor. Do not stop taking it early, even if you feel better.\n*   Azithromycin can be taken with or without food.\n*   Report any signs of liver problems (e.g., yellowing of skin/eyes, dark urine, severe abdominal pain) to your doctor immediately.\n*   Seek immediate medical attention if you experience an irregular heartbeat, dizziness, or fainting.\n*   If you develop diarrhea, especially if it is watery or bloody, contact your doctor.\n*   Store at room temperature away from moisture and heat.\n\n**Alternative Medications:**\n\n*   **Other Macrolides:** Clarithromycin, erythromycin.\n*   **Tetracyclines:** Doxycycline, tetracycline.\n*   **Fluoroquinolones:** Levofloxacin, ciprofloxacin (use should be reserved for when other options are not suitable due to potential side effects).\n*   **Beta-Lactams:** Amoxicillin, cephalexin.\n\n**Disclaimer:** This information is intended for informational purposes only and does not substitute professional medical advice. Always consult with a qualified healthcare provider for diagnosis and treatment.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-03T13:35:19.170910"
+  },
+  {
+    "id": "b20be4d9-d0c4-4c88-a664-6ca0c06a197b",
+    "user_id": "86swf6tt8jw",
+    "session_id": "1743668333707",
+    "content": "helloo ... what is the purpose of paracetamol",
+    "sender": "user",
+    "timestamp": "2025-04-03T13:49:24.537582"
+  },
+  {
+    "id": "311d1a0f-e6a0-4196-9d83-a6f503bb9400",
+    "user_id": "86swf6tt8jw",
+    "session_id": "1743668333707",
+    "content": "Paracetamol, also known as acetaminophen, is primarily used for:\n\n1.  **Analgesia (Pain Relief):** It alleviates mild to moderate pain such as headaches, muscle aches, toothaches, and menstrual pain.\n\n2.  **Antipyresis (Fever Reduction):** It helps reduce fever by acting on the hypothalamus in the brain to lower the body's temperature.\n\nIt is important to note that paracetamol has minimal anti-inflammatory effects compared to nonsteroidal anti-inflammatory drugs (NSAIDs).\n",
+    "sender": "bot",
+    "timestamp": "2025-04-03T13:49:24.545539"
+  },
+  {
+    "id": "0ee4ae8e-8eda-4330-a7fa-bc9ab8298fdb",
+    "user_id": "86swf6tt8jw",
+    "session_id": "1743668333707",
+    "content": "thanks",
+    "sender": "user",
+    "timestamp": "2025-04-03T13:50:47.588939"
+  },
+  {
+    "id": "5d771103-3c45-4eeb-bc4d-59d5736a4db6",
+    "user_id": "86swf6tt8jw",
+    "session_id": "1743668333707",
+    "content": "Okay, I'm ready to assist you. Please provide me with the prescription details, including the patient's age, weight (if available), drug names, dosages, and any other relevant information. I can then analyze the prescription for drug interactions, appropriate dosing, and patient counseling points.\n",
+    "sender": "bot",
+    "timestamp": "2025-04-03T13:50:47.591060"
   }
 ]

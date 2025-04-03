@@ -246,3 +246,79 @@
   }
 }
 
+/* Add these styles to your globals.css file */
+
+.markdown-content {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.markdown-content h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content h2 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.markdown-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.markdown-content li {
+  margin-bottom: 0.25rem;
+}
+
+.markdown-content strong {
+  font-weight: bold;
+}
+
+.markdown-content em {
+  font-style: italic;
+}
+
+.markdown-content p {
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content a {
+  color: #4299e1;
+  text-decoration: underline;
+}
+
+.markdown-content code {
+  padding: 0.1em 0.3em;
+  background-color: #f1f1f1;
+  border-radius: 0.3em;
+  font-family: monospace;
+}
+
+.markdown-content pre {
+  padding: 0.5rem;
+  background-color: #f1f1f1;
+  border-radius: 0.3em;
+  margin: 0.5rem 0;
+  overflow-x: auto;
+}
+

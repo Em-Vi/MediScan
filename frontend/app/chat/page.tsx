@@ -216,7 +216,7 @@ export default function ChatPage() {
   const handleFileUpload = async (file: File) => {
     if (!user || !currentSessionId) return;
     
-    setIsTyping(true); // Use typing indicator to show analysis is in progress
+    setIsTyping(true);
     
     try {
       // Check if it's an image file that might be a prescription
@@ -236,6 +236,7 @@ export default function ChatPage() {
               attachments: [result.attachment]
             };
             
+            // Add messages with the analysis result (markdown will be rendered automatically)
             setMessages(prev => [...prev, userMessage]);
             
             // Wait a moment for better UX
@@ -244,7 +245,7 @@ export default function ChatPage() {
             // Add AI response with the analysis
             const aiMessage: Message = {
               id: uuidv4(),
-              content: result.analysis,
+              content: result.analysis, // This contains markdown that will be rendered
               sender: "bot",
               timestamp: new Date()
             };
