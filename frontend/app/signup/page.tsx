@@ -129,7 +129,7 @@ export default function SignUpPage() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">Create an account</CardTitle>
           <CardDescription className="text-center">
-            Enter your information to create your MediScan account
+            Enter your information to create your AutoDoc account
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
@@ -145,7 +145,7 @@ export default function SignUpPage() {
               <Input
                 id="fullName"
                 name="fullName"
-                placeholder="John Doe"
+                placeholder="Your Full Name"
                 value={formData.fullName}
                 onChange={handleChange}
                 className={errors.fullName ? "border-destructive" : ""}
@@ -160,7 +160,7 @@ export default function SignUpPage() {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="john.doe@example.com"
+                placeholder="Your Email"
                 value={formData.email}
                 onChange={handleChange}
                 className={errors.email ? "border-destructive" : ""}

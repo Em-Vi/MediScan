@@ -30,10 +30,10 @@ export function FileUpload({ onFileUpload, onCancel }: FileUploadProps) {
 
     // Check file type
     const fileExtension = selectedFile.name.split(".").pop()?.toLowerCase() || ""
-    const allowedExtensions = ["jpg", "jpeg", "png", "mp3", "wav", "pdf", "docx"]
+    const allowedExtensions = ["jpg", "jpeg", "png"]
 
     if (!allowedExtensions.includes(fileExtension)) {
-      setError("Unsupported file type. Please upload jpg, png, mp3, wav, pdf, or docx files.")
+      setError("Unsupported file type. Please upload jpg, png files.")
       return
     }
 

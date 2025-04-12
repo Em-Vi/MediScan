@@ -18,9 +18,8 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "MediScan - Your AI Medical Drug Assistant",
+  title: "AutoDoc - Your AI Medical Drug Assistant",
   description: "AI-powered medical drug recommendation chatbot",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({

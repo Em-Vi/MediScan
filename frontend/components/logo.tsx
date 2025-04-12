@@ -13,7 +13,7 @@ interface LogoProps {
   className?: string
 }
 
-export function Logo({ size = "md", showText = false, animate = false, centered = false, className = "" }: LogoProps) {
+export function Logo({ size = "md", showText = true, animate, centered = false, className = "" }: LogoProps) {
   const [animationState, setAnimationState] = useState<"initial" | "animating" | "final">(animate ? "initial" : "final")
 
   useEffect(() => {
@@ -69,27 +69,20 @@ export function Logo({ size = "md", showText = false, animate = false, centered 
       >
         <div className="bg-gradient-to-r from-medical-blue to-medical-green rounded-full p-1">
           <Pill size={iconSizes[size]} className="text-white" />
-          <span
-            className="absolute inset-0 flex items-center justify-center text-white font-bold"
-            style={{ fontSize: `${iconSizes[size] / 3}px` }}
-          >
-            +
-          </span>
         </div>
       </div>
-      {showText && animationState !== "final" && (
+      {showText && (
         <span
           className={cn(
-            "bg-gradient-to-r from-medical-blue to-medical-green bg-clip-text text-transparent transition-all duration-700",
+            "bg-gradient-to-r flex flex-column items-center justify-center from-medical-blue to-medical-green bg-clip-text text-transparent transition-all duration-700",
             {
-              "animate-pulse": animationState === "animating",
+              "translate-x-2": animationState === "animating",
               "opacity-0": animationState === "initial",
-              "opacity-100": animationState === "animating",
-              "opacity-0 translate-y-2": animationState === "final",
+              "opacity-100 translate": animationState === "final",
             },
           )}
         >
-          MediScan
+          AutoDoc
         </span>
       )}
     </Link>

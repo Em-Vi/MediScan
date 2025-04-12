@@ -4,10 +4,11 @@ import type React from "react"
 
 import { useState } from "react"
 import { format } from "date-fns"
-import { Trash2, MessageSquare, Search, X } from "lucide-react"
+import { Trash2, MessageSquare, Search, X, PanelLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { type ChatSession, deleteChatSession } from "@/lib/supabase"
+import { cn } from "@/lib/utils"
 
 interface ChatHistorySidebarProps {
   sessions: ChatSession[]
@@ -17,6 +18,8 @@ interface ChatHistorySidebarProps {
   onClose?: () => void
   className?: string
 }
+
+
 
 export function ChatHistorySidebar({
   sessions,
@@ -63,26 +66,30 @@ export function ChatHistorySidebar({
           <h2 className="font-semibold">Chat History</h2>
           <div className="flex items-center gap-1">
             {showSearch ? (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => {
-                  setShowSearch(false)
-                  setSearchQuery("")
-                }}
-              >
-                <X className="h-4 w-4" />
-              </Button>
+             <Button
+                             variant="ghost"
+                             size="icon"
+                             onClick={onClose}
+                             className={cn("rounded-full")}
+                             aria-label={"Close sidebar"}
+                           >
+                             <PanelLeft className="h-5 w-5" />
+                           </Button>
             ) : (
               <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setShowSearch(true)}>
                 <Search className="h-4 w-4" />
               </Button>
             )}
             {onClose && (
-              <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close sidebar">
-                <X className="h-5 w-5" />
-              </Button>
+              <Button
+              variant="ghost"
+              size="icon"
+              onClick={onClose}
+              className={cn("rounded-full")}
+              aria-label={"Close sidebar"}
+            >
+              <PanelLeft className="h-5 w-5" />
+            </Button>
             )}
           </div>
         </div>

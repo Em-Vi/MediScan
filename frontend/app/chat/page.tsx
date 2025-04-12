@@ -24,7 +24,6 @@ import { FileUpload } from "@/components/file-upload"
 import { MessageItem } from "@/components/message-item"
 import { ChatHistorySidebar } from "@/components/chat-history-sidebar"
 import { VoiceAssistant } from "@/components/voice-assistant"
-import { AnimatedLogo } from "@/components/animated-logo"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { useApp } from "@/contexts/app-context"
 import { cn } from "@/lib/utils"
@@ -43,6 +42,7 @@ import {
 } from "@/lib/chat-service"
 import { v4 as uuidv4 } from 'uuid'; // Make sure to import uuid
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu"
+import { Logo } from "@/components/logo"
 
 export default function ChatPage() {
   const router = useRouter()
@@ -57,7 +57,6 @@ export default function ChatPage() {
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([])
   const [currentSessionId, setCurrentSessionId] = useState<string>("")
   const [showSidebar, setShowSidebar] = useState(false)
-  const [showInitialAnimation, setShowInitialAnimation] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Redirect if not logged in
@@ -108,10 +107,10 @@ export default function ChatPage() {
       }
     }
 
-    if (user && currentSessionId && !showInitialAnimation) {
+    if (user && currentSessionId) {
       loadMessages()
     }
-  }, [user, currentSessionId, showInitialAnimation])
+  }, [user, currentSessionId])
 
   // Save messages to localStorage whenever they change
   useEffect(() => {
@@ -315,9 +314,6 @@ export default function ChatPage() {
     setShowSidebar(!showSidebar)
   }
 
-  const handleAnimationComplete = () => {
-    setShowInitialAnimation(false)
-  }
 
   const handleLogout = async () => {
     await signOut()
@@ -328,13 +324,7 @@ export default function ChatPage() {
     return <LoadingScreen message="Loading your conversations..." />
   }
 
-  if (showInitialAnimation) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-background">
-        <AnimatedLogo size="lg" onAnimationComplete={handleAnimationComplete} />
-      </div>
-    )
-  }
+ 
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -375,35 +365,7 @@ export default function ChatPage() {
                 <PanelLeft className="h-5 w-5" />
               </Button>
 
-              <div className="flex items-center gap-2">
-                <div className="relative bg-gradient-to-r from-medical-blue to-medical-green rounded-full p-1">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="text-white"
-                  >
-                    <path
-                      d="M12 2C12.5523 2 13 2.44772 13 3V21C13 21.5523 12.5523 22 12 22C11.4477 22 11 21V3C11 2.44772 11.4477 2 12 2Z"
-                      fill="currentColor"
-                    />
-                    <path
-                      d="M17.2 5C17.9 5 18.5 5.6 18.5 6.33V17.67C18.5 18.4 17.9 19 17.2 19C16.5 19 15.9 18.4 15.9 17.67V6.33C15.9 5.6 16.5 5 17.2 5Z"
-                      fill="currentColor"
-                    />
-                    <path
-                      d="M6.8 5C7.5 5 8.1 5.6 8.1 6.33V17.67C8.1 18.4 7.5 19 6.8 19C6.1 19 5.5 18.4 5.5 17.67V6.33C5.5 5.6 6.1 5 6.8 5Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-xs">
-                    +
-                  </span>
-                </div>
-                <span className="font-semibold text-lg">MediScan</span>
-              </div>
+             <Logo/>
             </div>
 
             <div className="ml-auto flex items-center gap-2">

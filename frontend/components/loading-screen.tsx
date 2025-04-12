@@ -27,11 +27,11 @@ export function LoadingScreen({ message = "Loading..." }: LoadingScreenProps) {
         <div className="medical-pulse w-48 h-48" style={{ animationDelay: "1s" }}></div>
 
         {/* Spinning rings */}
-        <div className="loading-logo-circle w-24 h-24"></div>
+        {/* <div className="loading-logo-circle w-24 h-24"></div>
         <div
           className="loading-logo-circle w-32 h-32"
           style={{ animationDelay: "0.2s", borderTopColor: "hsl(var(--secondary))" }}
-        ></div>
+        ></div> */}
 
         {/* Center logo */}
         <div className="relative animate-float">
@@ -40,7 +40,6 @@ export function LoadingScreen({ message = "Loading..." }: LoadingScreenProps) {
           </div>
           <div className="bg-gradient-to-r from-medical-blue to-medical-green rounded-full p-4 shadow-lg">
             <Pill size={40} className="text-white" />
-            <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg">+</span>
           </div>
           <div className="absolute -bottom-6 left-1/2 -translate-x-1/2">
             <Heart className="h-5 w-5 text-destructive animate-bounce-small" />
@@ -48,14 +47,14 @@ export function LoadingScreen({ message = "Loading..." }: LoadingScreenProps) {
         </div>
       </div>
 
-      {showText && (
+      {/* {showText && (
         <div className="animate-fade-in">
           <h2 className="text-2xl font-bold bg-gradient-to-r from-medical-blue to-medical-green bg-clip-text text-transparent mb-2 animate-pulse-scale">
             MediScan
           </h2>
           <p className="text-muted-foreground animate-fade-in">{message}</p>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
