@@ -1,7 +1,7 @@
 import os
 import google.generativeai as genai
 import requests
-from app.config import GEMINI_API_KEY,OCR_SPACE_API_KEY
+# from app.config import GEMINI_API_KEY,OCR_SPACE_API_KEY
 import logging
 from app.services.image_service import extract_text_from_image
 
@@ -10,6 +10,8 @@ logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+OCR_SPACE_API_KEY = ""
+GEMINI_API_KEY = ""
 # Configure the Gemini API if API key is available
 if GEMINI_API_KEY:
     logger.info("GEMINI_API_KEY is set. Configuring Gemini API...")

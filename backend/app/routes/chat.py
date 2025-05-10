@@ -25,7 +25,8 @@ async def chat_with_ai(request: ChatRequest = Body(...)):
         ai_response = generate_ai_response(request.message)
         logger.info(f"Generated AI response: {ai_response[:50]}...")
         
-        # Create a session ID if none provided
+        # Create a session ID if none 
+        # provided
         session_id = request.session_id or str(uuid.uuid4())
         
         # Store user message in database

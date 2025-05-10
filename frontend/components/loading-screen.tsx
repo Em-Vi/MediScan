@@ -22,9 +22,9 @@ export function LoadingScreen({ message = "Loading..." }: LoadingScreenProps) {
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-background z-50 transition-opacity duration-300">
       <div className="relative mb-8">
         {/* Animated circles */}
-        <div className="medical-pulse w-32 h-32"></div>
-        <div className="medical-pulse w-40 h-40" style={{ animationDelay: "0.5s" }}></div>
-        <div className="medical-pulse w-48 h-48" style={{ animationDelay: "1s" }}></div>
+        <div className="medical-pulse w-32 h-32 left-0 right-0 bottom-0"></div>
+        <div className="medical-pulse w-40 h-40 left-0 right-0 bottom-0" style={{ animationDelay: "0.5s" }}></div>
+        <div className="medical-pulse w-48 h-48 left-0 right-0 bottom-0" style={{ animationDelay: "1s" }}></div>
 
         {/* Spinning rings */}
         {/* <div className="loading-logo-circle w-24 h-24"></div>
