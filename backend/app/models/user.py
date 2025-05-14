@@ -13,11 +13,11 @@ class UserModel(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {PyObjectId: str}
         
-class userSignup(BaseModel):
+class UserSignup(BaseModel):
     username: str
     email: EmailStr
     password: str
@@ -25,3 +25,10 @@ class userSignup(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str    
+
+class TokenRequest(BaseModel):
+    token: str
+    
+class verificationRequest(BaseModel):
+    email: EmailStr
+    token: str    

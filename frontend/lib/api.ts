@@ -1,76 +1,53 @@
+import api from "./axios";
+
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-// Auth functions
-export const getCurrentUser = async (token: string) => {
-  const response = await fetch(`${API_URL}/auth/me`, {
-    method: "GET",
-    headers: {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
-  return response.json();
-};
-
 export const login = async (email: string, password: string) => {
-  const response = await fetch(`${API_URL}/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  });
-  return response.json();
+  const response = await api.post("/auth/login", { email, password });
+  return response.data;
 };
 
-export const signup = async (email: string, password: string, fullName: string) => {
-  const response = await fetch(`${API_URL}/auth/signup`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password, fullName }),
-  });
-  return response.json();
+export const signup = async (email: string, password: string, username: string) => {
+  const response = await api.post("/auth/signup", { email, password, username });
+  console.log(response)
+  return response.data;
 };
+
+export const getCurrentUser = async () => {
+  const response = await api.get("/auth/me");
+  return response.data;
+};
+
+export const verifyEmail = async (token: string) => {
+  const response = await api.post("/auth/verify", { token });
+  return response.data;
+};
+
+export const resendEmail = async (email: string, token: string) => {
+  const response = await api.post("/auth/send-verification", { email,token });
+  return response.data;
+}
 
 // Chat functions
 export const sendMessage = async (userId: string, message: string, sessionId?: string) => {
-  const response = await fetch(`${API_URL}/chat`, {
-    
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ 
-      user_id: userId, 
-      message,
-      session_id: sessionId 
-    }),
+  const response = await api.post("/chat", {
+    user_id: userId,
+    message,
+    session_id: sessionId,
   });
-  const data = await response.json();
+  const data = response.data;
   console.log("API Response:", data);
   return data;
 };
 
 export const getChatHistory = async (userId: string) => {
-  const response = await fetch(`${API_URL}/history/${userId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return response.json();
+  const response = await api.get(`/history/${userId}`);
+  return response.data;
 };
 
 export const getSessionMessages = async (userId: string, sessionId: string) => {
-  const response = await fetch(`${API_URL}/history/${userId}/${sessionId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return response.json();
+  const response = await api.get(`/history/${userId}/${sessionId}`);
+  return response.data;
 };
 
 export const uploadImage = async (userId: string, file: File) => {
@@ -78,11 +55,8 @@ export const uploadImage = async (userId: string, file: File) => {
   formData.append("user_id", userId);
   formData.append("file", file);
 
-  const response = await fetch(`${API_URL}/image/upload`, {
-    method: "POST",
-    body: formData,
-  });
-  return response.json();
+  const response = await api.post("/image/upload", formData);
+  return response.data;
 };
 
 export const analyzePrescription = async (userId: string, file: File) => {
@@ -91,15 +65,11 @@ export const analyzePrescription = async (userId: string, file: File) => {
   formData.append("file", file);
 
   console.log(`Sending file: ${file.name}, size: ${file.size}, type: ${file.type}`);
-  
+
   try {
-    const response = await fetch(`${API_URL}/image/analyze`, {
-      method: "POST",
-      body: formData,
-    });
-    
+    const response = await api.post("/image/analyze", formData);
     console.log("Response status:", response.status);
-    const data = await response.json();
+    const data = response.data;
     console.log("Analysis response:", data);
     return data;
   } catch (error) {
@@ -108,4 +78,4 @@ export const analyzePrescription = async (userId: string, file: File) => {
   }
 };
 
-// Example usage in your component:
+

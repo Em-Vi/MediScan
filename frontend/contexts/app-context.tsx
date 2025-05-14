@@ -1,147 +1,150 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { createContext, useContext, useState, useEffect } from "react"
-import { type User, mockSignIn, mockSignUp, mockSignOut, mockGoogleSignIn } from "@/lib/supabase"
+import type React from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import { login as apiLogin, signup as apiSignup, getCurrentUser } from "@/lib/api"; // Import actual API functions
+import { type User } from "@/lib/types"; // Import User type
 
-type Theme = "light" | "dark" | "light-custom" | "system"
+
+type Theme = "light" | "dark" | "light-custom" | "system";
 
 interface AppContextType {
-  theme: Theme
-  setTheme: (theme: Theme) => void
-  user: User | null
-  isLoading: boolean
-  signIn: (email: string, password: string) => Promise<{ error: string | null }>
-  signUp: (email: string, password: string, fullName: string) => Promise<{ error: string | null }>
-  signOut: () => Promise<{ error: string | null }>
-  googleSignIn: () => Promise<{ error: string | null }>
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+  user: User | null;
+  isLoading: boolean;
+  signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signUp: (
+    email: string,
+    password: string,
+    fullName: string
+  ) => Promise<{ error: string | null; message?: string }>;
+  signOut: () => Promise<{ error: string | null }>;
 }
 
-const AppContext = createContext<AppContextType | undefined>(undefined)
+const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("system")
-  const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [theme, setThemeState] = useState<Theme>("system");
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize theme from localStorage or system preference
+  // Function to fetch current user details using token
+  const fetchCurrentUser = async () => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      setUser(null);
+      setIsLoading(false);
+      return;
+    }
+    try {
+      const user = await getCurrentUser(); // Use the new getCurrentUser function
+      setUser(user);
+    } catch (error) {
+      console.error("Failed to fetch current user:", error);
+      setUser(null);
+      localStorage.removeItem("authToken");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Initialize theme and attempt to load user from token
   useEffect(() => {
-    const savedTheme = localStorage.getItem("AutoDoc-theme") as Theme | null
-
+    const savedTheme = localStorage.getItem("AutoDoc-theme") as Theme | null;
     if (savedTheme) {
-      setThemeState(savedTheme)
+      setThemeState(savedTheme);
     } else {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
-      setThemeState(systemTheme)
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+        .matches
+        ? "dark"
+        : "light";
+      setThemeState(systemTheme);
     }
-
-    // Check for existing user session
-    const savedUser = localStorage.getItem("AutoDoc_user")
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser))
-      } catch (error) {
-        console.error("Failed to parse user data:", error)
-      }
-    }
-
-    setIsLoading(false)
-  }, [])
+    fetchCurrentUser();
+  }, []);
 
   // Apply theme class to document
   useEffect(() => {
-    const root = window.document.documentElement
-
-    // Remove all theme classes
-    root.classList.remove("light", "dark", "light-custom")
-
-    // Apply the selected theme
+    const root = window.document.documentElement;
+    root.classList.remove("light", "dark", "light-custom");
     if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
-      root.classList.add(systemTheme)
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+        .matches
+        ? "dark"
+        : "light";
+      root.classList.add(systemTheme);
     } else {
-      root.classList.add(theme)
+      root.classList.add(theme);
     }
-
-    // Save to localStorage
-    localStorage.setItem("AutoDoc-theme", theme)
-  }, [theme])
+    localStorage.setItem("AutoDoc-theme", theme);
+  }, [theme]);
 
   const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme)
-  }
+    setThemeState(newTheme);
+  };
 
   const signIn = async (email: string, password: string) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const { user: newUser, error } = await mockSignIn(email, password)
-
-      if (error) {
-        return { error }
+      const response = await apiLogin(email, password);
+      if (response && response.access_token) {
+        localStorage.setItem("authToken", response.access_token);
+        await fetchCurrentUser();
+        return { error: null };
+      } else {
+        return { error: "Login failed: No access token received." };
       }
-
-      setUser(newUser)
-      return { error: null }
-    } catch (error) {
-      return { error: "An unexpected error occurred" }
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.detail ||
+        error.message ||
+        "An unexpected error occurred during sign-in";
+      localStorage.removeItem("authToken");
+      setUser(null);
+      return { error: errorMessage };
     } finally {
-      setIsLoading(false)
+      if (isLoading) setIsLoading(false);
     }
-  }
+  };
 
-  const signUp = async (email: string, password: string, fullName: string) => {
-    setIsLoading(true)
+  const signUp = async (
+    email: string,
+    password: string,
+    fullName: string
+  ) => {
+    setIsLoading(true);
     try {
-      const { user: newUser, error } = await mockSignUp(email, password, fullName)
-
-      if (error) {
-        return { error }
+      const response = await apiSignup(email, password, fullName);
+      console.log(response)
+      if (response && response.message) {
+        return { error: null, message: response.message };
+      } else {
+        return { error: "Signup successful, but unexpected response format." };
       }
-
-      setUser(newUser)
-      return { error: null }
-    } catch (error) {
-      return { error: "An unexpected error occurred" }
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.detail ||
+        error.message ||
+        "An unexpected error occurred during signup";
+      return { error: errorMessage };
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const signOut = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const { error } = await mockSignOut()
-
-      if (error) {
-        return { error }
-      }
-
-      setUser(null)
-      return { error: null }
+      localStorage.removeItem("authToken");
+      setUser(null);
+      return { error: null };
     } catch (error) {
-      return { error: "An unexpected error occurred" }
+      return { error: "An unexpected error occurred during sign-out" };
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
-
-  const googleSignIn = async () => {
-    setIsLoading(true)
-    try {
-      const { user: newUser, error } = await mockGoogleSignIn()
-
-      if (error) {
-        return { error }
-      }
-
-      setUser(newUser)
-      return { error: null }
-    } catch (error) {
-      return { error: "An unexpected error occurred" }
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  };
 
   return (
     <AppContext.Provider
@@ -153,19 +156,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         signIn,
         signUp,
         signOut,
-        googleSignIn,
       }}
     >
       {children}
     </AppContext.Provider>
-  )
+  );
 }
 
 export function useApp() {
-  const context = useContext(AppContext)
+  const context = useContext(AppContext);
   if (context === undefined) {
-    throw new Error("useApp must be used within an AppProvider")
+    throw new Error("useApp must be used within an AppProvider");
   }
-  return context
+  return context;
 }
 

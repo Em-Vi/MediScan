@@ -80,13 +80,17 @@ export default function LoginPage() {
     try {
       const { error } = await signIn(formData.email, formData.password)
 
+      if(error=="Email not verified"){
+        router.push("/verify-email")
+      }
+
       if (error) {
         setErrors((prev) => ({ ...prev, general: error }))
         return
       }
 
       router.push("/chat")
-    } catch (error) {
+    } catch (error: any) {
       setErrors((prev) => ({ ...prev, general: "An unexpected error occurred" }))
     } finally {
       setIsSubmitting(false)

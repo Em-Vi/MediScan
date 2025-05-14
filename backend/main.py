@@ -6,12 +6,12 @@ from app.routes import auth, chat, history, image
 
 
 
-app = FastAPI()
+app = FastAPI(debug=True)
 
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000", "http://192.168.56.1:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -26,9 +26,9 @@ app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 # Include routers
 app.include_router(auth.router)
-app.include_router(chat.router)
-app.include_router(history.router)
-app.include_router(image.router)
+# app.include_router(chat.router)
+# app.include_router(history.router)
+# app.include_router(image.router)
 
 @app.get("/")
 def read_root():
