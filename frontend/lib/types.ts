@@ -26,7 +26,8 @@ export interface ChatSession {
 export interface User {
   id: string;
   email: string;
-  fullName: string;
+  username: string;
+  is_verified: boolean;
   createdAt: Date;
   lastLogin: Date;
   avatar?: string;

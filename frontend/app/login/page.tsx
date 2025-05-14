@@ -33,7 +33,7 @@ export default function LoginPage() {
 
   // Redirect if already logged in
   useEffect(() => {
-    if (user && !isLoading) {
+    if (user && !isLoading && user.is_verified) {
       router.push("/chat")
     }
   }, [user, isLoading, router])
@@ -79,10 +79,6 @@ export default function LoginPage() {
 
     try {
       const { error } = await signIn(formData.email, formData.password)
-
-      if(error=="Email not verified"){
-        router.push("/verify-email")
-      }
 
       if (error) {
         setErrors((prev) => ({ ...prev, general: error }))

@@ -117,7 +117,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     try {
       const response = await apiSignup(email, password, fullName);
       console.log(response)
-      if (response && response.message) {
+      if (response && response.message && response.access_token) {
+        localStorage.setItem("authToken", response.access_token);
+        await fetchCurrentUser();
         return { error: null, message: response.message };
       } else {
         return { error: "Signup successful, but unexpected response format." };

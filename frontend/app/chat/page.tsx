@@ -66,6 +66,12 @@ export default function ChatPage() {
     }
   }, [user, isLoading, router])
 
+  useEffect(() => {
+    if (!user?.is_verified) {
+      router.push("/verify-email")
+    }
+  }, [user, isLoading, router])
+
   // Load chat sessions
   useEffect(() => {
     if (!user) return

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from app.models.user import UserSignup, UserLogin, TokenRequest, verificationRequest
 from app.services.auth_service import signup_user, login_user, verify, get_user_details_from_token
 from app.utils.jwt import verify_access_token
@@ -24,5 +24,9 @@ async def send_verification(data: verificationRequest):
     return await send_verification_email(data.email, data.token)
 
 @router.get("/me")
-async def get_current_user(data: TokenRequest):
-    return await get_user_details_from_token(data.token)
+async def get_current_user(request: Request):
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Authorization header missing or invalid")
+    token = auth_header.split(" ", 1)[1]
+    return await get_user_details_from_token(token)

@@ -14,35 +14,29 @@ async def signup_user(user: UserSignup):
             detail="User already exists",
         )
     
-    hashed_password = hash_password(user.password)    
     token = str(uuid.uuid4())
     
     user_data = user.dict()
-    user_data["password"] = hashed_password
+    user_data["password"] = hash_password(user.password)   
     user_data["is_verified"] = False
     user_data["verification_token"] = token
     
     await db["users"].insert_one(user_data)
     await send_verification_email(user.email, token)
+    token = create_access_token({"username": user.username ,"email": user.email,"is_verified": False})
     
-    return {"message": "Signup successful, check your email to verify"}
+    return {"message": "Signup successful, check your email to verify", "access_token": token}
 
 async def login_user(user: UserLogin):
     found = await db["users"].find_one({"email": user.email})
     # Verify the raw password entered by the user against the hashed password in the database
     if not found or not verify_password(user.password, found["password"]):
-        print(user.password, found["password"])
         raise HTTPException(
             status_code=401,
             detail="Invalid credentials",
         )
-    if not found.get("is_verified",False):
-        raise HTTPException(
-            status_code=401,
-            detail="Email not verified",
-        )
         
-    token = create_access_token({"username": found["username"], "email": found["email"]})
+    token = create_access_token({"username": found["username"], "email": found["email"], "is_verified": found["is_verified"]})
     return {"access_token": token}   
 
 async def verify(token: str):
@@ -62,6 +56,7 @@ async def get_user_details_from_token(token: str):
 
     username = payload.get("username")
     email = payload.get("email")
+    is_verified = payload.get("is_verified")
     if not username:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -70,5 +65,6 @@ async def get_user_details_from_token(token: str):
 
     return {
         "username": username,
-        "email": email
+        "email": email,
+        "is_verified": is_verified          
     }

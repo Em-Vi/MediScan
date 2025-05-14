@@ -1,4 +1,5 @@
 import httpx
+from app.db import db
 from app.config import settings
 
 RESEND_API_KEY = settings.RESEND_API_KEY
@@ -7,6 +8,7 @@ FRONTEND_URL = settings.FRONTEND_URL
 
 async def send_verification_email(to_email: str, token: str):
     verify_url = f"{FRONTEND_URL}/verify-email/confirm?token={token}"
+    await db["users"].update_one({"email": to_email}, {"$set": {"verification_token": token}})
     
     payload = {
         "from": FROM_EMAIL,
