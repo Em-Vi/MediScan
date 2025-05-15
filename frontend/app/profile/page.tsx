@@ -35,11 +35,11 @@ export default function ProfilePage() {
 
     if (user) {
       setUserData({
-        name: user.fullName,
+        name: user.username,
         email: user.email,
       })
       setFormData({
-        name: user.fullName,
+        name: user.username,
         email: user.email,
       })
     }
@@ -108,7 +108,7 @@ export default function ProfilePage() {
                   {user.avatar ? (
                     <img
                       src={user.avatar || "/placeholder.svg"}
-                      alt={user.fullName}
+                      alt={user.username}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -159,8 +159,7 @@ export default function ProfilePage() {
                     name="email"
                     type="email"
                     value={formData.email}
-                    onChange={handleChange}
-                    disabled={isSaving}
+                    disabled
                     className="transition-all duration-300"
                   />
                 ) : (

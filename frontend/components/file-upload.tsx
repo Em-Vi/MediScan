@@ -52,9 +52,8 @@ export function FileUpload({ onFileUpload, onCancel }: FileUploadProps) {
     }
   }
 
-  const getFileType = (file: File): "image" | "audio" | "document" => {
+  const getFileType = (file: File): "image" | "document" => {
     if (file.type.startsWith("image/")) return "image"
-    if (file.type.startsWith("audio/")) return "audio"
     return "document"
   }
 
@@ -64,8 +63,6 @@ export function FileUpload({ onFileUpload, onCancel }: FileUploadProps) {
     switch (type) {
       case "image":
         return <Image className="h-6 w-6 text-primary" />
-      case "audio":
-        return <Music className="h-6 w-6 text-accent" />
       case "document":
         return <File className="h-6 w-6 text-secondary" />
     }
@@ -114,21 +111,18 @@ export function FileUpload({ onFileUpload, onCancel }: FileUploadProps) {
             ref={fileInputRef}
             className="hidden"
             onChange={handleFileChange}
-            accept=".jpg,.jpeg,.png,.mp3,.wav,.pdf,.docx"
+            accept=".jpg,.jpeg,.png,.pdf,.docx"
           />
           <div className="flex flex-col items-center gap-2">
             <div className="bg-primary/10 p-3 rounded-full">
               <Paperclip className="h-8 w-8 text-primary" />
             </div>
             <p className="text-sm font-medium">Click to upload or drag and drop</p>
-            <p className="text-xs text-muted-foreground">JPG, PNG, MP3, WAV, PDF, DOCX (Max 10MB)</p>
+            <p className="text-xs text-muted-foreground">JPG, PNG, PDF, DOCX (Max 10MB)</p>
 
             <div className="flex flex-wrap justify-center gap-2 mt-4">
               <div className="flex items-center gap-1 text-xs bg-background px-2 py-1 rounded-full">
                 <Image className="h-3 w-3" /> Images
-              </div>
-              <div className="flex items-center gap-1 text-xs bg-background px-2 py-1 rounded-full">
-                <Music className="h-3 w-3" /> Audio
               </div>
               <div className="flex items-center gap-1 text-xs bg-background px-2 py-1 rounded-full">
                 <File className="h-3 w-3" /> Documents
