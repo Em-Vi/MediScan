@@ -1,18 +1,19 @@
-# from fastapi import APIRouter, HTTPException
-# from typing import List
-# from app.models.mock_db import db
+from fastapi import APIRouter, HTTPException
+from typing import List
+from app.db import db
 
-# router = APIRouter()
+router = APIRouter(prefix="/history")
 
-# @router.get("/user/{user_id}")
-# async def get_user_history(user_id: str):
-#     """Get all message history for a user"""
-#     try:
-#         messages = db.get_messages_by_user(user_id)
+@router.get("/{user_id}")
+async def get_user_history(user_id: str):
+    """Get all message history for a user"""
+    try:
+        # Get all sessions for the user
+        sessions = db.get_all_user_sessions(user_id)
+        return {"sessions": sessions}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching chat history: {str(e)}")
         
-#         # Group messages by session
-#         sessions = {}
-#         for msg in messages:
 #             session_id = msg.get("session_id")
 #             if session_id not in sessions:
 #                 sessions[session_id] = {
@@ -41,11 +42,11 @@
 #     except Exception as e:
 #         raise HTTPException(status_code=500, detail=f"Error fetching chat history: {str(e)}")
 
-# @router.get("/session/{session_id}")
-# async def get_session_messages(session_id: str):
-#     """Get all messages for a specific session"""
-#     try:
-#         messages = db.get_messages_by_session(session_id)
-#         return {"messages": messages}
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"Error retrieving session messages: {str(e)}")
+@router.get("/{user_id}/{session_id}")
+async def get_session_messages(user_id: str, session_id: str):
+    """Get all messages for a specific session"""
+    try:
+        messages = db.get_messages_for_session(user_id, session_id)
+        return {"messages": messages}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving session messages: {str(e)}")

@@ -7,7 +7,7 @@ import logging
 from app.services.ai_service import analyze_image
 from app.services.image_service import extract_text_from_file
 
-router = APIRouter()
+router = APIRouter(prefix="/image")
 logger = logging.getLogger(__name__)
 
 # Create uploads directory if it doesn't exist

@@ -23,7 +23,7 @@ async def signup_user(user: UserSignup):
     
     await db["users"].insert_one(user_data)
     await send_verification_email(user.email, token)
-    token = create_access_token({"username": user.username ,"email": user.email,"is_verified": False})
+    token = create_access_token({"email": user.email})
     
     return {"message": "Signup successful, check your email to verify", "access_token": token}
 
@@ -35,8 +35,8 @@ async def login_user(user: UserLogin):
             status_code=401,
             detail="Invalid credentials",
         )
-        
-    token = create_access_token({"username": found["username"], "email": found["email"], "is_verified": found["is_verified"]})
+    print(found["_id"])
+    token = create_access_token({"email": found["email"]})
     return {"access_token": token}   
 
 async def verify(token: str):
@@ -54,17 +54,18 @@ async def get_user_details_from_token(token: str):
             detail="Invalid or expired token",
         )
 
-    username = payload.get("username")
     email = payload.get("email")
-    is_verified = payload.get("is_verified")
-    if not username:
+    if not email:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Token payload missing username",
+            detail="Token payload missing email",
         )
+    user = await db["users"].find_one({"email": email})
+    print(user)
 
     return {
-        "username": username,
-        "email": email,
-        "is_verified": is_verified          
+        "username": user["username"],
+        "email": user["email"],
+        "is_verified": user["is_verified"],    
+        "id": str(user["_id"]),     
     }

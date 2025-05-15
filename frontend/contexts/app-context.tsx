@@ -39,6 +39,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
     try {
       const user = await getCurrentUser(); // Use the new getCurrentUser function
+      console.log(user)
       setUser(user);
     } catch (error) {
       console.error("Failed to fetch current user:", error);
