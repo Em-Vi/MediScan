@@ -5,8 +5,6 @@ from .common import PyObjectId
 
 class MessageModel(BaseModel):
     id: Optional[PyObjectId] = Field(default=None, alias="_id")
-    user_id: PyObjectId
-    session_id: PyObjectId
     role: Literal["user", "ai"]
     content: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)

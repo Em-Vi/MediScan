@@ -18,7 +18,7 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "AutoDoc - Your AI Medical Drug Assistant",
+  title: "MediScan - Your AI Medical Drug Assistant",
   description: "AI-powered medical drug recommendation chatbot",
 }
 

@@ -71,15 +71,15 @@ export default function ChatPage() {
   useEffect(() => {
     if (!user && !isLoading) {
       router.push("/login");
+      return 
     }
-  }, [user, isLoading, router]);
 
-  useEffect(() => {
     if (!user?.is_verified) {
       router.push("/verify-email");
     }
   }, [user, isLoading, router]);
 
+ 
   // Load chat sessions
   useEffect(() => {
     if (!user) return;
@@ -191,7 +191,6 @@ export default function ChatPage() {
       // Send user message and get bot response
       const { userMessage, botMessage, error } = await sendChatMessage(
         user.id,
-        currentSessionId,
         messageContent,
         attachments
       );
@@ -241,7 +240,7 @@ export default function ChatPage() {
       // Check if it's an image file that might be a prescription
       if (file.type.startsWith("image/")) {
         // Ask user if they want to analyze this as a prescription
-        if (confirm("Do you want to analyze this image as a prescription?")) {
+       
           // Use the prescription analysis flow
           const result = await uploadAndAnalyzeImage(user.id, file);
 
@@ -265,7 +264,7 @@ export default function ChatPage() {
             const aiMessage: Message = {
               id: uuidv4(),
               content: result.analysis, // This contains markdown that will be rendered
-              sender: "bot",
+              sender: "ai",
               timestamp: new Date(),
             };
 
@@ -283,7 +282,7 @@ export default function ChatPage() {
             setShowFileUpload(false);
             return;
           }
-        }
+        
       }
 
       // Default file upload behavior if not a prescription or user declined analysis
@@ -300,7 +299,7 @@ export default function ChatPage() {
         id: uuidv4(),
         content:
           "I'm sorry, I couldn't process that image. Please try again with a clearer image.",
-        sender: "bot",
+        sender: "ai",
         timestamp: new Date(),
       };
 

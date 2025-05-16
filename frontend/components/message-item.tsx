@@ -80,7 +80,7 @@ export function MessageItem({ message, isLatest = false }: MessageItemProps) {
             />
             <div className="flex justify-between items-center p-2 bg-muted/30">
               <div className="flex items-center gap-2">
-                <Image className="h-4 w-4 text-primary" />
+                
                 <span className="text-xs truncate max-w-[200px]">{attachment.name}</span>
               </div>
               <Button variant="ghost" size="icon" asChild className="h-8 w-8">

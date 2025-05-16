@@ -74,7 +74,7 @@ export default function LandingPage() {
         <div className="container flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2">
             <Logo size="sm" />
-            <span className="text-sm text-muted-foreground">© 2023 AutoDoc. All rights reserved.</span>
+            <span className="text-sm text-muted-foreground">© 2023 MediScan. All rights reserved.</span>
           </div>
           <div className="flex gap-4 text-sm text-muted-foreground">
             <Link href="#" className="hover:text-primary transition-colors">

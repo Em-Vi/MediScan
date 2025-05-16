@@ -1,6 +1,7 @@
 import os
 import google.generativeai as genai
 import requests
+import anyio
 from app.config import settings
 from app.services.image_service import extract_text_from_image
 
@@ -16,7 +17,7 @@ else:
 
 # System prompt for context
 SYSTEM_PROMPT = """
-You are an advanced AI-powered pharmacy assistant named AutoDoc designed to support pharmacists in analyzing prescriptions, detecting drug interactions, providing patient counseling points, and assessing prescription safety. Your responses should be structured, concise, and clinically accurate based on the latest drug databases. Follow these guidelines when processing input:
+You are an advanced AI-powered pharmacy assistant named MediScan designed to support pharmacists in analyzing prescriptions, detecting drug interactions, providing patient counseling points, and assessing prescription safety. Your responses should be structured, concise, and clinically accurate based on the latest drug databases. Follow these guidelines when processing input:
 1.  Drug Interaction Detection:
 o  Identify potential major & moderate drug interactions.
 o  Provide a brief explanation of the interaction, possible adverse effects, and recommendations.
@@ -52,13 +53,13 @@ Please provide:
 Format your response in clear sections with appropriate markdown formatting. If the OCR text is incomplete or unclear, please indicate this and provide analysis based on what is available.
 """
 
-def generate_ai_response(message: str) -> str:
+async def generate_ai_response(message: str) -> str:
     try:
         if not GEMINI_API_KEY or not model:
             return "This is a mock response because the GEMINI_API_KEY is not set."
         # Combine system prompt with user message
         full_prompt = f"{SYSTEM_PROMPT}\n\nUser: {message}"
-        response = model.generate_content(full_prompt)
+        response = await anyio.to_thread.run_sync(model.generate_content, full_prompt)
         return response.text
     except Exception as e:
         error_message = str(e)

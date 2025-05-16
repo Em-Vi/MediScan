@@ -6,7 +6,7 @@ from bson import ObjectId
 
 from app.services.ai_service import generate_ai_response
 from app.db import db
-from app.models.message import MessageModel
+from app.models.chat import ChatModel
 from app.models.common import PyObjectId
 
 
@@ -15,56 +15,51 @@ router = APIRouter()
 class ChatRequest(BaseModel):
     user_id: str
     message: str
-    session_id: str = None
 
 @router.post("/chat")
 async def chat_with_ai(request: ChatRequest = Body(...)):
     try:
-        
-        
         # Generate AI response using Gemini
-        ai_response = generate_ai_response(request.message)
-     
-        
-        # Create a session ID if none provided
-        session_id = request.session_id or str(uuid.uuid4())
+        ai_response = await generate_ai_response(request.message)
 
-        # Convert user_id and session_id to PyObjectId using the correct validator
+        # Convert user_id to PyObjectId using the correct validator
         try:
             user_obj_id = PyObjectId(ObjectId(request.user_id))
         except Exception:
             raise HTTPException(status_code=400, detail="Invalid user_id format")
-        try:
-            session_obj_id = PyObjectId(ObjectId(request.user_id))
-        except Exception:
-            session_obj_id = PyObjectId()  # generate new ObjectId if not valid
-            session_id = str(session_obj_id)
 
-        # Store user message in database using MessageModel
-        user_message = MessageModel(
-            user_id=user_obj_id,
-            session_id=session_obj_id,
-            role="user",
-            content=request.message
-        )
-        user_message_dict = user_message.dict(by_alias=True)
-        db.insert_message(user_message_dict)
+        # Store user message in database
+        user_msg = {
+            "user_id": user_obj_id,
+            "role": "user",
+            "content": request.message
+        }
+        ai_msg = {
+            "user_id": user_obj_id,
+            "role": "ai",
+            "content": ai_response
+        }
+        existing_chat = await db.chats.find_one({"user_id": user_obj_id})
 
-        # Store AI response in database using MessageModel
-        bot_message = MessageModel(
-            user_id=user_obj_id,
-            session_id=session_obj_id,
-            role="ai",
-            content=ai_response
-        )
-        bot_message_dict = bot_message.dict(by_alias=True)
-        db.insert_message(bot_message_dict)
+        if existing_chat:
+            # Append new messages to existing chat
+            await db.chats.update_one(
+                {"_id": existing_chat["_id"]},
+                {"$push": {"messages": {"$each": [user_msg, ai_msg]}}}
+            )
+            chat_id = existing_chat["_id"]
+        else:
+            # Create a new chat
+            chat_doc = ChatModel(
+                user_id=user_obj_id,
+                messages=[user_msg, ai_msg]
+            )
+            result = await db.chats.insert_one(chat_doc.dict(by_alias=True))
+            chat_id = result.inserted_id
 
         return {
             "response": ai_response,
-            "session_id": session_id,
-            "user_message_id": str(user_message_dict["_id"]),
-            "bot_message_id": str(bot_message_dict["_id"])
+            "chat_id": str(chat_id)
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing chat: {str(e)}")

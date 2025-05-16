@@ -82,7 +82,7 @@ export function Logo({ size = "md", showText = true, animate, centered = false, 
             },
           )}
         >
-          AutoDoc
+          MediScan
         </span>
       )}
     </Link>

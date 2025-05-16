@@ -14,7 +14,7 @@ export interface MessageAttachment {
 export interface Message {
   id: string
   content: string
-  sender: "user" | "bot"
+  sender: "user" | "ai"
   timestamp: Date
   attachments?: MessageAttachment[]
 }
@@ -198,8 +198,8 @@ export const getMessages = async (userId: string, sessionId: string) => {
     const messages: Message[] = [
       {
         id: "1",
-        content: "Hello! I'm AutoDoc, your AI pharmacy assistant. How can I help you today?",
-        sender: "bot",
+        content: "Hello! I'm MediScan, your AI pharmacy assistant. How can I help you today?",
+        sender: "ai",
         timestamp: new Date(),
       },
     ];
@@ -213,7 +213,6 @@ export const getMessages = async (userId: string, sessionId: string) => {
 
 export const sendChatMessage = async (
   userId: string, 
-  sessionId: string, 
   content: string, 
   attachments?: MessageAttachment[]
 ) => {
@@ -228,13 +227,13 @@ export const sendChatMessage = async (
     }
 
     // Send to backend and get response
-    const response = await sendMessage(userId, content, sessionId);
+    const response = await sendMessage(userId, content);
     
     // Create bot message from response
     const botMessage: Message = {
-      id: response.bot_message_id || (Date.now() + 1).toString(),
+      id: response.chat_id,
       content: response.response,
-      sender: "bot",
+      sender: "ai",
       timestamp: new Date(),
     }
 

@@ -109,7 +109,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-md animate-fade-in">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">Welcome back</CardTitle>
-          <CardDescription className="text-center">Login to your AutoDoc account</CardDescription>
+          <CardDescription className="text-center">Login to your MediScan account</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">

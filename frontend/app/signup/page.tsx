@@ -129,7 +129,7 @@ export default function SignUpPage() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">Create an account</CardTitle>
           <CardDescription className="text-center">
-            Enter your information to create your AutoDoc account
+            Enter your information to create your MediScan account
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>

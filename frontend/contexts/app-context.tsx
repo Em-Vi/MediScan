@@ -52,7 +52,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // Initialize theme and attempt to load user from token
   useEffect(() => {
-    const savedTheme = localStorage.getItem("AutoDoc-theme") as Theme | null;
+    const savedTheme = localStorage.getItem("MediScan-theme") as Theme | null;
     if (savedTheme) {
       setThemeState(savedTheme);
     } else {
@@ -78,7 +78,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     } else {
       root.classList.add(theme);
     }
-    localStorage.setItem("AutoDoc-theme", theme);
+    localStorage.setItem("MediScan-theme", theme);
   }, [theme]);
 
   const setTheme = (newTheme: Theme) => {

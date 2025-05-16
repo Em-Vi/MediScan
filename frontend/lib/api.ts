@@ -29,11 +29,10 @@ export const resendEmail = async (email: string, token: string) => {
 }
 
 // Chat functions
-export const sendMessage = async (userId: string, message: string, sessionId?: string) => {
+export const sendMessage = async (userId: string, message: string) => {
   const response = await api.post("/chat", {
     user_id: userId,
     message,
-    session_id: sessionId,
   });
   const data = response.data;
   console.log("API Response:", data);
@@ -68,9 +67,7 @@ export const analyzePrescription = async (userId: string, file: File) => {
 
   try {
     const response = await api.post("/image/analyze", formData);
-    console.log("Response status:", response.status);
     const data = response.data;
-    console.log("Analysis response:", data);
     return data;
   } catch (error) {
     console.error("Error analyzing image:", error);
