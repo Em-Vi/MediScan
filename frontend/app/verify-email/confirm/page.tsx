@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { CheckCircle, XCircle, ArrowRight, RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -11,7 +11,7 @@ import { verifyEmail } from "@/lib/api"
 
 type VerificationStatus = "loading" | "success" | "error"
 
-export default function VerifyEmailConfirmPage() {
+function VerifyEmailConfirmPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [status, setStatus] = useState<VerificationStatus>("success")
@@ -157,5 +157,13 @@ export default function VerifyEmailConfirmPage() {
         </CardFooter>
       </Card>
     </div>
+  )
+}
+
+export default function VerifyEmailConfirmPage() {
+  return (
+    <Suspense>
+      <VerifyEmailConfirmPageInner />
+    </Suspense>
   )
 }

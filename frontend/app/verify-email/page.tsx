@@ -22,11 +22,13 @@ export default function VerifyEmailPage() {
 
   // If no user is found, we'll use this as a fallback
   const userEmail = user?.email || "your email address"
-  const token = localStorage.getItem("authToken") as string;
   
   const handleResendVerification = async () => {
     setIsResending(true)
-
+    let token = "";
+    if (typeof window !== "undefined") {
+      token = localStorage.getItem("authToken") as string;
+    }
     try {
       // Simulate API call to resend verification email
        await resendEmail(userEmail, token);
