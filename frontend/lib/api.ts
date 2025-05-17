@@ -29,9 +29,10 @@ export const resendEmail = async (email: string, token: string) => {
 }
 
 // Chat functions
-export const sendMessage = async (userId: string, message: string) => {
+export const sendMessage = async (userId: string, message: string, chat_id?:string) => {
   const response = await api.post("/chat", {
     user_id: userId,
+    chat_id: chat_id,
     message,
   });
   const data = response.data;

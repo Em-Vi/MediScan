@@ -4,7 +4,9 @@ from datetime import datetime
 from .common import PyObjectId
 
 class MessageModel(BaseModel):
-    id: Optional[PyObjectId] = Field(default=None, alias="_id")
+    id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
+    chat_id: PyObjectId  # NEW: reference to chat
+    user_id: PyObjectId
     role: Literal["user", "ai"]
     content: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)

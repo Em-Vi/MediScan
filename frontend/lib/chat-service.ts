@@ -77,24 +77,21 @@ export const saveChatHistory = (userId: string, messages: Message[], sessionId: 
   localStorage.setItem(`mediscan_chat_${userId}_${sessionId}`, JSON.stringify(messages))
 }
 
-export const loadChatSessions = (userId: string): ChatSession[] => {
-  const sessionsJson = localStorage.getItem(`mediscan_sessions_${userId}`)
-  if (!sessionsJson) return []
-
+export const loadChatSessions = async (userId: string): Promise<ChatSession[]> => {
   try {
-    const sessions = JSON.parse(sessionsJson)
-    // Convert string dates back to Date objects with safety checks
-    return sessions.map((session: any) => ({
-      ...session,
-      lastMessageDate: session.lastMessageDate ? new Date(session.lastMessageDate) : new Date(),
-      messages: session.messages.map((msg: any) => ({
-        ...msg,
-        timestamp: msg.timestamp ? new Date(msg.timestamp) : new Date(),
-      })),
-    }))
+    const response = await getChatHistory(userId);
+    if (!response.sessions) return [];
+    // Map API response to ChatSession[]
+    return response.sessions.map((session: any) => ({
+      id: session.id,
+      title: session.title,
+      lastMessage: session.last_message || "",
+      lastMessageDate: session.last_message_date ? new Date(session.last_message_date) : new Date(),
+      messages: [], // messages are loaded separately
+    }));
   } catch (error) {
-    console.error("Failed to parse chat sessions:", error)
-    return []
+    console.error("Failed to load chat sessions from API:", error);
+    return [];
   }
 }
 
@@ -175,11 +172,11 @@ export const deleteChatSession = (userId: string, sessionId: string): boolean =>
 // API integration methods that replace the mock methods
 export const getMessages = async (userId: string, sessionId: string) => {
   try {
-    // Try local storage first for offline support
-    const savedMessages = loadChatSession(userId, sessionId)
-    if (savedMessages.length > 0) {
-      return { messages: savedMessages, error: null }
-    }
+    // // Try local storage first for offline support
+    // const savedMessages = loadChatSession(userId, sessionId)
+    // if (savedMessages.length > 0) {
+    //   return { messages: savedMessages, error: null }
+    // }
 
     // Otherwise fetch from API
     const response = await getSessionMessages(userId, sessionId);
@@ -214,7 +211,8 @@ export const getMessages = async (userId: string, sessionId: string) => {
 export const sendChatMessage = async (
   userId: string, 
   content: string, 
-  attachments?: MessageAttachment[]
+  attachments?: MessageAttachment[],
+  chatId?:string
 ) => {
   try {
     // Create user message
@@ -227,7 +225,7 @@ export const sendChatMessage = async (
     }
 
     // Send to backend and get response
-    const response = await sendMessage(userId, content);
+    const response = await sendMessage(userId,content, chatId);
     
     // Create bot message from response
     const botMessage: Message = {

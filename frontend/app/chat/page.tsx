@@ -57,126 +57,65 @@ export default function ChatPage() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [isLoadingMessages, setIsLoadingMessages] = useState(true);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false); // default false
   const [showFileUpload, setShowFileUpload] = useState(false);
   const [pendingAttachment, setPendingAttachment] =
     useState<MessageAttachment | null>(null);
   const [latestMessageId, setLatestMessageId] = useState<string | null>(null);
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string>("");
+  const [currentChatId, setCurrentChatId] = useState<string>(""); // New state for chat_id
   const [showSidebar, setShowSidebar] = useState(false);
+  const [sessionsLoaded, setSessionsLoaded] = useState(false); // track if sessions loaded
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Redirect if not logged in
   useEffect(() => {
     if (!user && !isLoading) {
       router.push("/login");
-      return 
+      return;
     }
-
     if (!user?.is_verified) {
       router.push("/verify-email");
     }
   }, [user, isLoading, router]);
-
- 
-  // Load chat sessions
+  // Fetch chat sessions every time sidebar is opened
   useEffect(() => {
-    if (!user) return;
+    if (!user || !showSidebar) return;
+    loadChatSessions(user.id).then((sessions) => setChatSessions(sessions));
+  }, [user, showSidebar]);
 
-    // Load chat sessions
-    const sessions = loadChatSessions(user.id);
-
-    if (sessions.length === 0) {
-      // Create a new session if none exist
-      const newSession = createNewChatSession(user.id);
-      setChatSessions([newSession]);
-      setCurrentSessionId(newSession.id);
-    } else {
-      setChatSessions(sessions);
-      setCurrentSessionId(sessions[0].id);
-    }
-  }, [user]);
-
-  // Load messages for current session
-  useEffect(() => {
-    const loadMessages = async () => {
-      if (!user || !currentSessionId) return;
-
-      setIsLoadingMessages(true);
-
-      try {
-        const { messages: loadedMessages, error } = await getMessages(
-          user.id,
-          currentSessionId
-        );
-
-        if (error) {
-          console.error("Failed to load messages:", error);
-          return;
-        }
-
-        setMessages(loadedMessages);
-      } catch (error) {
-        console.error("Error loading messages:", error);
-      } finally {
+  // Only fetch messages when a session is selected from sidebar
+  const handleSessionSelect = (sessionId: string) => {
+    setCurrentSessionId(sessionId);
+    setCurrentChatId(sessionId); // Store chat_id for backend
+    setIsLoadingMessages(true);
+    setMessages([]);
+    if (user) {
+      getMessages(user.id, sessionId).then(({ messages: loadedMessages, error }) => {
+        if (!error) setMessages(loadedMessages);
         setIsLoadingMessages(false);
-      }
-    };
-
-    if (user && currentSessionId) {
-      loadMessages();
-    }
-  }, [user, currentSessionId]);
-
-  // Save messages to localStorage whenever they change
-  useEffect(() => {
-    if (user && currentSessionId && messages.length > 0) {
-      saveChatHistory(user.id, messages, currentSessionId);
-
-      // Update chat sessions
-      setChatSessions((prev) => {
-        const updatedSessions = [...prev];
-        const sessionIndex = updatedSessions.findIndex(
-          (s) => s.id === currentSessionId
-        );
-
-        if (sessionIndex >= 0) {
-          updatedSessions[sessionIndex] = {
-            ...updatedSessions[sessionIndex],
-            lastMessage: messages[messages.length - 1]?.content || "",
-            lastMessageDate: new Date(),
-            messages,
-          };
-
-          // Generate title from first user message if not already set
-          if (updatedSessions[sessionIndex].title === "New Conversation") {
-            const firstUserMessage = messages.find((m) => m.sender === "user");
-            if (firstUserMessage) {
-              updatedSessions[sessionIndex].title =
-                firstUserMessage.content.substring(0, 30) +
-                (firstUserMessage.content.length > 30 ? "..." : "");
-            }
-          }
-        }
-
-        return updatedSessions;
       });
     }
-  }, [user, currentSessionId, messages]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (window.innerWidth < 768) {
+      setShowSidebar(false);
+    }
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  // When user clicks new chat, clear messages and session
+  const handleNewChat = () => {
+    setCurrentSessionId("");
+    setCurrentChatId(""); // Clear chat_id for new chat
+    setMessages([]);
+    if (window.innerWidth < 768) {
+      setShowSidebar(false);
+    }
+  };
 
   const handleSendMessage = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
 
-    if (!user || !currentSessionId) return;
+    if (!user) return;
 
     const messageContent = input.trim();
     if (!messageContent && !pendingAttachment) return;
@@ -192,7 +131,8 @@ export default function ChatPage() {
       const { userMessage, botMessage, error } = await sendChatMessage(
         user.id,
         messageContent,
-        attachments
+        attachments,
+        currentChatId // Pass chat_id for continuation
       );
 
       if (error) {
@@ -203,6 +143,11 @@ export default function ChatPage() {
       if (userMessage) {
         setMessages((prev) => [...prev, userMessage]);
         setLatestMessageId(userMessage.id);
+      }
+
+      // If a new chat was created, update currentChatId
+      if (botMessage && !currentChatId) {
+        setCurrentChatId(botMessage.id);
       }
 
       // Clear pending attachment
@@ -313,25 +258,6 @@ export default function ChatPage() {
   const cancelFileUpload = () => {
     setShowFileUpload(false);
     setPendingAttachment(null);
-  };
-
-  const handleSessionSelect = (sessionId: string) => {
-    setCurrentSessionId(sessionId);
-    if (window.innerWidth < 768) {
-      setShowSidebar(false);
-    }
-  };
-
-  const handleNewChat = () => {
-    if (!user) return;
-
-    const newSession = createNewChatSession(user.id);
-    setChatSessions((prev) => [newSession, ...prev]);
-    setCurrentSessionId(newSession.id);
-    setMessages([]);
-    if (window.innerWidth < 768) {
-      setShowSidebar(false);
-    }
   };
 
   const handleProfileClick = (path: string) => {
@@ -515,13 +441,17 @@ export default function ChatPage() {
             </div>
           ) : (
             <>
-              {messages.map((message) => (
-                <MessageItem
-                  key={message.id}
-                  message={message}
-                  isLatest={message.id === latestMessageId}
-                />
-              ))}
+              {messages.map((message, idx) => {
+                // Ensure key is always a string and unique
+                const key = message.id ? String(message.id) : `msg-${idx}`;
+                return (
+                  <MessageItem
+                    key={key}
+                    message={message}
+                    isLatest={message.id === latestMessageId}
+                  />
+                );
+              })}
 
               {isTyping && (
                 <div className="flex justify-start animate-fade-in">
