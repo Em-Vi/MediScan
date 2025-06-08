@@ -60,11 +60,11 @@ export function ChatHistorySidebar({
   };
 
   return (
-    <div className={`flex flex-col h-full ${className}`}>
-      <div className="p-4 border-b">
-        <div className="flex items-center justify-between mb-2">
+    <div className={`flex flex-col h-full ${className} `}>
+      <div className="p-4 border-b ">
+        <div className="flex items-center justify-between mb-2 ">
           <h2 className="font-semibold">Chat History</h2>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 overflow-hidden">
             {showSearch ? (
               <>
             <Button
@@ -144,7 +144,11 @@ export function ChatHistorySidebar({
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
                     <MessageSquare className="h-4 w-4 flex-shrink-0" />
-                    <div className="truncate font-medium">{session.title}</div>
+                    <div className="truncate font-medium">
+                      {session.title.length > 22
+                        ? `${session.title.slice(0, 22)}...`
+                        : session.title}
+                    </div>
                   </div>
                   <Button
                     variant="ghost"

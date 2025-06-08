@@ -422,9 +422,9 @@ export default function ChatPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-lg w-full">
                 {[
                   "Medications for migraines?",
-                  "How do I treat a common cold?",
+                  "Adverse effects of atorvastatin",
                   "Side effects of ibuprofen?",
-                  "Is this rash concerning?",
+                  "Pediatric doses of  amoxicillin",
                 ].map((suggestion) => (
                   <Button
                     key={suggestion}
