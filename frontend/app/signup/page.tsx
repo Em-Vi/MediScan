@@ -151,7 +151,9 @@ export default function SignUpPage() {
                 className={errors.fullName ? "border-destructive" : ""}
                 disabled={isSubmitting}
               />
-              {errors.fullName && <p className="text-sm text-destructive">{errors.fullName}</p>}
+              {errors.fullName && (
+                <p className="text-sm text-destructive">{errors.fullName}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -166,7 +168,9 @@ export default function SignUpPage() {
                 className={errors.email ? "border-destructive" : ""}
                 disabled={isSubmitting}
               />
-              {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+              {errors.email && (
+                <p className="text-sm text-destructive">{errors.email}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -198,7 +202,9 @@ export default function SignUpPage() {
                   <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
                 </Button>
               </div>
-              {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
+              {errors.password && (
+                <p className="text-sm text-destructive">{errors.password}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -213,7 +219,9 @@ export default function SignUpPage() {
                 className={errors.confirmPassword ? "border-destructive" : ""}
                 disabled={isSubmitting}
               />
-              {errors.confirmPassword && <p className="text-sm text-destructive">{errors.confirmPassword}</p>}
+              {errors.confirmPassword && (
+                <p className="text-sm text-destructive">{errors.confirmPassword}</p>
+              )}
             </div>
           </CardContent>
 

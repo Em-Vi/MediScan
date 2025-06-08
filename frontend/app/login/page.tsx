@@ -131,7 +131,9 @@ export default function LoginPage() {
                 className={errors.email ? "border-destructive" : ""}
                 disabled={isSubmitting}
               />
-              {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+              {errors.email && (
+                <p className="text-sm text-destructive">{errors.email}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -168,7 +170,9 @@ export default function LoginPage() {
                   <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
                 </Button>
               </div>
-              {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
+              {errors.password && (
+                <p className="text-sm text-destructive">{errors.password}</p>
+              )}
             </div>
           </CardContent>
 
