@@ -26,7 +26,7 @@ export function GoogleSignIn({ mode, className = "" }: GoogleSignInProps) {
     try {
       /* @ts-ignore */
       google.accounts.id.initialize({
-  client_id: "NEXT_PUBLIC_GOOGLE_CLIENT_ID",
+  client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
   callback: async (response) => {
     const idToken = response.credential;
 
