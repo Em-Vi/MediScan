@@ -180,8 +180,7 @@ export default function ChatPage() {
   };
 
   const handleFileUpload = async (file: File) => {
-    if (!user || !currentSessionId) return;
-
+    if (!user) return;
     setIsTyping(true);
 
     try {
