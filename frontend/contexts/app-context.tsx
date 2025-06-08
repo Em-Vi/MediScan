@@ -2,24 +2,30 @@
 
 import type React from "react";
 import { createContext, useContext, useState, useEffect } from "react";
-import { login as apiLogin, signup as apiSignup, getCurrentUser } from "@/lib/api"; // Import actual API functions
+import { login as apiLogin, signup as apiSignup, getCurrentUser, googleSignInApi } from "@/lib/api"; // Import actual API functions
 import { type User } from "@/lib/types"; // Import User type
 
+// Define API_URL at the top of the file
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 type Theme = "light" | "dark" | "light-custom" | "system";
 
+// Update AppContextType interface to include googleSignIn
 interface AppContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   user: User | null;
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+
   signUp: (
     email: string,
     password: string,
     fullName: string
   ) => Promise<{ error: string | null; message?: string }>;
   signOut: () => Promise<{ error: string | null }>;
+  googleSignIn: () => Promise<{ error: string | null }>;
+
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -151,6 +157,26 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Fix error type handling in googleSignIn
+  const googleSignIn = async (): Promise<{ error: string | null }> => {
+    setIsLoading(true);
+    try {
+      const data = await googleSignInApi();
+      if (data && data.access_token) {
+        localStorage.setItem("authToken", data.access_token);
+        await fetchCurrentUser();
+        return { error: null };
+      } else {
+        return { error: "Google Sign-In failed: No access token received." };
+      }
+    } catch (error: any) {
+      console.error("Error during Google Sign-In:", error);
+      return { error: error.message || "An unexpected error occurred during Google Sign-In" };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -161,6 +187,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         signIn,
         signUp,
         signOut,
+        googleSignIn,
       }}
     >
       {children}

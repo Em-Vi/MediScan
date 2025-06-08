@@ -81,4 +81,14 @@ export const deleteChatSession = async (userId: string, sessionId: string) => {
   return response.data;
 }
 
+export const googleSignInApi = async () => {
+  try {
+    const response = await api.post("/auth/google", {}, { withCredentials: true });
+    return response.data;
+  } catch (error) {
+    console.error("Error during Google Sign-In:", error);
+    throw error;
+  }
+};
+
 

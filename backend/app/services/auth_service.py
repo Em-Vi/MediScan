@@ -2,10 +2,11 @@ from app.db import db
 from app.models.user import UserSignup, UserLogin
 from app.utils.password import hash_password, verify_password
 from app.utils.jwt import create_access_token, verify_access_token
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Request
 from app.services.email_service import send_verification_email
 from fastapi.logger import logger
 import uuid
+import httpx
 
 async def signup_user(user: UserSignup):
     try:
@@ -100,4 +101,49 @@ async def get_user_details_from_token(token: str):
         raise HTTPException(
             status_code=500,
             detail="An error occurred while retrieving user details. Please try again later.",
+        )
+
+async def google_auth_service(request: Request):
+    try:
+        # Extract Google token from request headers
+        google_token = request.headers.get("Authorization")
+        if not google_token or not google_token.startswith("Bearer "):
+            raise HTTPException(status_code=401, detail="Authorization header missing or invalid")
+
+        google_token = google_token.split(" ", 1)[1]
+
+        # Verify Google token using Google's OAuth2 API
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"https://oauth2.googleapis.com/tokeninfo?id_token={google_token}")
+            if response.status_code != 200:
+                raise HTTPException(status_code=401, detail="Invalid Google token")
+
+            user_info = response.json()
+
+        # Extract user information
+        email = user_info.get("email")
+        username = user_info.get("name")
+        if not email or not username:
+            raise HTTPException(status_code=400, detail="Google token missing required fields")
+
+        # Check if user exists in the database
+        user = await db["users"].find_one({"email": email})
+        if not user:
+            # Create new user if not exists
+            user_data = {
+                "email": email,
+                "username": username,
+                "is_verified": True,
+            }
+            await db["users"].insert_one(user_data)
+
+        # Generate access token
+        token = create_access_token({"email": email})
+        return {"access_token": token}
+
+    except Exception as e:
+        logger.error(f"Error during Google authentication: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail="An error occurred during Google authentication. Please try again later.",
         )
