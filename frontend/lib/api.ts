@@ -76,4 +76,9 @@ export const analyzePrescription = async (userId: string, file: File) => {
   }
 };
 
+export const deleteChatSession = async (userId: string, sessionId: string) => {
+  const response = await api.delete(`/history/${userId}/${sessionId}`);
+  return response.data;
+}
+
 

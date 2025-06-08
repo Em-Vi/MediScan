@@ -61,3 +61,21 @@ async def get_session_messages(user_id: str, session_id: str):
         return {"messages": messages}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error retrieving session messages: {str(e)}")
+    
+@router.delete("/{user_id}/{session_id}")
+async def delete_session(user_id: str, session_id: str):
+   
+    try:
+        # Delete all messages in the session
+        result = await db.messages.delete_many({"chat_id": ObjectId(session_id)})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Session not found or already deleted")
+        
+        # Delete the chat session itself
+        result = await db.chats.delete_one({"_id": ObjectId(session_id), "user_id": ObjectId(user_id)})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Session not found or does not belong to user")
+        
+        return {"message": "Session deleted successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error deleting session: {str(e)}")

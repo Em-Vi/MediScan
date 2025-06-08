@@ -10,7 +10,7 @@ export interface MessageAttachment {
 export interface Message {
   id: string;
   content: string;
-  sender: "user" | "bot";
+  sender: "user" | "ai";
   timestamp: Date;
   attachments?: MessageAttachment[];
 }

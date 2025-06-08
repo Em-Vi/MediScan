@@ -7,26 +7,31 @@ import { format } from "date-fns";
 import { Trash2, MessageSquare, Search, X, PanelLeft, MessageSquarePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { type ChatSession, deleteChatSession } from "@/lib/supabase";
+import { ChatSession } from "@/lib/types";
+import { deleteChatSession } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { on } from "events";
 
 interface ChatHistorySidebarProps {
   sessions: ChatSession[];
+  user_id: string;
   currentSessionId: string;
   onSessionSelect: (sessionId: string) => void;
   onNewSession: () => void;
   onClose?: () => void;
   className?: string;
+  onSessionUpdate: (sessions: ChatSession[]) => void; // Add this line
 }
 
 export function ChatHistorySidebar({
   sessions,
+  user_id,
   currentSessionId,
   onSessionSelect,
   onNewSession,
   onClose,
   className = "",
+  onSessionUpdate, // Add this line
 }: ChatHistorySidebarProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
@@ -42,20 +47,22 @@ export function ChatHistorySidebar({
     e.stopPropagation();
 
     if (confirm("Are you sure you want to delete this conversation?")) {
-      deleteChatSession("user_id", sessionId);
+      deleteChatSession(user_id, sessionId);
 
-      // If we're deleting the current session, select another one
-      if (sessionId === currentSessionId && sessions.length > 1) {
-        const nextSession = sessions.find((s) => s.id !== sessionId);
-        if (nextSession) {
-          onSessionSelect(nextSession.id);
-        }
+      // Notify parent component to update sessions state
+      const updatedSessions = sessions.filter((s) => s.id !== sessionId);
+
+      if (sessionId === currentSessionId && updatedSessions.length > 0) {
+        const nextSession = updatedSessions[0];
+        onSessionSelect(nextSession.id);
       }
 
-      // If this was the last session, create a new one
-      if (sessions.length === 1) {
+      if (updatedSessions.length === 0) {
         onNewSession();
       }
+
+      // Pass updated sessions to parent
+      onSessionUpdate(updatedSessions);
     }
   };
 

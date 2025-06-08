@@ -92,14 +92,20 @@ export default function ChatPage() {
     setIsLoadingMessages(true);
     setMessages([]);
     if (user) {
-      getMessages(user.id, sessionId).then(({ messages: loadedMessages, error }) => {
-        if (!error) setMessages(loadedMessages);
-        setIsLoadingMessages(false);
-      });
+      getMessages(user.id, sessionId).then(
+        ({ messages: loadedMessages, error }) => {
+          if (!error) setMessages(loadedMessages);
+          setIsLoadingMessages(false);
+        }
+      );
     }
     if (window.innerWidth < 768) {
       setShowSidebar(false);
     }
+  };
+
+  const handleSessionUpdate = (updatedSessions: ChatSession[]) => {
+    setChatSessions(updatedSessions);
   };
 
   // When user clicks new chat, clear messages and session
@@ -185,49 +191,48 @@ export default function ChatPage() {
       // Check if it's an image file that might be a prescription
       if (file.type.startsWith("image/")) {
         // Ask user if they want to analyze this as a prescription
-       
-          // Use the prescription analysis flow
-          const result = await uploadAndAnalyzeImage(user.id, file);
 
-          if (result) {
-            // Add user message with the image
-            const userMessage: Message = {
-              id: uuidv4(),
-              content: "Can you analyze this prescription for me?",
-              sender: "user",
-              timestamp: new Date(),
-              attachments: [result.attachment],
-            };
+        // Use the prescription analysis flow
+        const result = await uploadAndAnalyzeImage(user.id, file);
 
-            // Add messages with the analysis result (markdown will be rendered automatically)
-            setMessages((prev) => [...prev, userMessage]);
+        if (result) {
+          // Add user message with the image
+          const userMessage: Message = {
+            id: uuidv4(),
+            content: "Can you analyze this prescription for me?",
+            sender: "user",
+            timestamp: new Date(),
+            attachments: [result.attachment],
+          };
 
-            // Wait a moment for better UX
-            await new Promise((resolve) => setTimeout(resolve, 500));
+          // Add messages with the analysis result (markdown will be rendered automatically)
+          setMessages((prev) => [...prev, userMessage]);
 
-            // Add AI response with the analysis
-            const aiMessage: Message = {
-              id: uuidv4(),
-              content: result.analysis, // This contains markdown that will be rendered
-              sender: "ai",
-              timestamp: new Date(),
-            };
+          // Wait a moment for better UX
+          await new Promise((resolve) => setTimeout(resolve, 500));
 
-            setMessages((prev) => [...prev, aiMessage]);
-            setLatestMessageId(aiMessage.id);
+          // Add AI response with the analysis
+          const aiMessage: Message = {
+            id: uuidv4(),
+            content: result.analysis, // This contains markdown that will be rendered
+            sender: "ai",
+            timestamp: new Date(),
+          };
 
-            // Save chat history
-            saveChatHistory(
-              user.id,
-              [...messages, userMessage, aiMessage],
-              currentSessionId
-            );
+          setMessages((prev) => [...prev, aiMessage]);
+          setLatestMessageId(aiMessage.id);
 
-            // Clear file upload UI
-            setShowFileUpload(false);
-            return;
-          }
-        
+          // Save chat history
+          saveChatHistory(
+            user.id,
+            [...messages, userMessage, aiMessage],
+            currentSessionId
+          );
+
+          // Clear file upload UI
+          setShowFileUpload(false);
+          return;
+        }
       }
 
       // Default file upload behavior if not a prescription or user declined analysis
@@ -290,10 +295,12 @@ export default function ChatPage() {
       >
         <ChatHistorySidebar
           sessions={chatSessions}
+          user_id={user?.id || ""}
           currentSessionId={currentSessionId}
           onSessionSelect={handleSessionSelect}
           onNewSession={handleNewChat}
           onClose={() => setShowSidebar(false)}
+          onSessionUpdate={handleSessionUpdate} // Add this line
         />
       </aside>
 
@@ -310,27 +317,29 @@ export default function ChatPage() {
             <div className="flex items-center gap-4">
               {!showSidebar && (
                 <>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={toggleSidebar}
-                  className={cn("rounded-full", showSidebar && "bg-primary/10")}
-                  aria-label={showSidebar ? "Close sidebar" : "Open sidebar"}
-                >
-                  <PanelLeft className="h-5 w-5" />
-                </Button>
-              
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={toggleSidebar}
+                    className={cn(
+                      "rounded-full",
+                      showSidebar && "bg-primary/10"
+                    )}
+                    aria-label={showSidebar ? "Close sidebar" : "Open sidebar"}
+                  >
+                    <PanelLeft className="h-5 w-5" />
+                  </Button>
 
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleNewChat}
-                className="rounded-full"
-                aria-label="New chat"
-              >
-                <MessageSquarePlus className="h-5 w-5" />
-              </Button>
-              </>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleNewChat}
+                    className="rounded-full"
+                    aria-label="New chat"
+                  >
+                    <MessageSquarePlus className="h-5 w-5" />
+                  </Button>
+                </>
               )}
 
               <Logo />
