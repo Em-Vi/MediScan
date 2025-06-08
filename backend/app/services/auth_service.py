@@ -22,12 +22,16 @@ async def signup_user(user: UserSignup):
         user_data["password"] = hash_password(user.password)   
         user_data["is_verified"] = False
         user_data["verification_token"] = token
+        # God ... even AI is autofilling the comments
+        # skipped verification for simplicity, in real-world applications, you would want to ensure the user is verified before allowing access to certain features
+        user_data["is_verified"] = True
         
         await db["users"].insert_one(user_data)
-        await send_verification_email(user.email, token)
+        # not sedning teh verification email here
+        # await send_verification_email(user.email, token)
         token = create_access_token({"email": user.email})
         
-        return {"message": "Signup successful, check your email to verify", "access_token": token}
+        return {"message": "Signup successful", "access_token": token}
     except Exception as e:
         logger.error(f"Error during signup: {e}")
         raise HTTPException(

@@ -117,12 +117,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     try {
       const response = await apiSignup(email, password, fullName);
-      console.log(response)
+      console.log(response);
       if (response && response.message && response.access_token) {
         localStorage.setItem("authToken", response.access_token);
         await fetchCurrentUser();
         return { error: null, message: response.message };
       } else {
+        console.error("Unexpected response format during signup:", response);
         return { error: "Signup successful, but unexpected response format." };
       }
     } catch (error: any) {
@@ -130,6 +131,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         error.response?.data?.detail ||
         error.message ||
         "An unexpected error occurred during signup";
+      console.error("Error during signup:", error);
       return { error: errorMessage };
     } finally {
       setIsLoading(false);

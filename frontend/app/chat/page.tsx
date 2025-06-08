@@ -75,9 +75,6 @@ export default function ChatPage() {
       router.push("/login");
       return;
     }
-    if (!user?.is_verified) {
-      router.push("/verify-email");
-    }
   }, [user, isLoading, router]);
   // Fetch chat sessions every time sidebar is opened
   useEffect(() => {
