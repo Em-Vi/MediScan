@@ -50,7 +50,7 @@
     "input-otp": "latest",
     "jwt-decode": "latest",
     "lucide-react": "latest",
-    "next": "latest",
+    "next": "^15.5.18",
     "next-themes": "latest",
     "react": "latest",
     "react-dom": "latest",
